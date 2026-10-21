@@ -1,175 +1,202 @@
-# TenderGuard — Research Questions and Evaluation Protocol
+# TenderGuard — Verification and Evaluation Plan
 
-**Task:** TG-D01 — Define research questions and the evaluation protocol  
-**Owner:** Daniyar Kairatov — ML and retrieval  
-**Reviewer:** Rassul Akhmetov — review pending  
-**Milestone:** M0 — First predefense, 24 October 2026  
-**Version:** 1.0, prepared for review on 21 October 2026
+## 1. Evaluation purpose
 
-This document defines planned evaluation. It contains no measured TenderGuard model results, user-study observations or approval claims.
+TenderGuard compares tender requirements with a company's documents and presents the findings with supporting quotations and source references. The evaluation will examine whether the platform retrieves the necessary evidence, interprets the requirements correctly and produces an assessment that a tender specialist can check. It will also test whether organization access and processing policies remain effective throughout that workflow.
 
-## Purpose and project alignment
+The main experimental question concerns the proposed staged RAG workflow. Separating requirement extraction, assessment and reporting may make errors easier to detect, but it also introduces additional model calls and opportunities to lose information between stages. A single-prompt RAG system provides the comparison needed to determine whether the additional structure is worthwhile.
 
-TenderGuard is a proposed platform for SMEs that compares tender requirements with company documents and returns source-linked documentary findings. This protocol operationalizes the proposal's four research questions and the target workflow: ingestion, requirement extraction, compliance analysis, and risk scoring/reporting. Ingestion is technical processing and need not be an LLM agent.
+The evaluation follows the objectives in the project proposal. Documentary fit is assessed against the supplied evidence; legal applicability requires its own validated basis.
 
-The literature review under TG-D02 motivates the method; TG-D03 develops the corpus and annotation rules; TG-D04 documents the technology comparison. This protocol specifies experiments and scoring conditions. It does not assert implementation of parsing, retrieval, model invocation or privacy enforcement.
-
-## Research-question overview
-
-| ID | Research question | Experiment and comparator | Data source | Main outcomes | Owner and coordination |
-| --- | --- | --- | --- | --- | --- |
-| RQ1 | Which retrieval configuration best finds supporting evidence? | Lexical baseline versus BGE-M3 dense versus multilingual E5-base; combined retrieval as a separately tuned variant | Authorized tender/company packages with adjudicated passage relevance | Recall@5/@10, complete-evidence success@5/@10, nDCG@10, latency | Daniyar; Rassul reviews |
-| RQ2 | Does staged analysis improve supported company-specific findings? | Paired B1 versus B2-fixed; gold-requirement classification and end-to-end analysis scored separately | Held-out requirements, company evidence, labels and source locators | Status macro-F1, extraction/joint F1, citation support, false passes, cost | Daniyar; Rassul coordinates contracts |
-| RQ3 | Do controls enforce the intended processing boundary? | Authorized and adversarial requests across two synthetic organizations; allowed versus blocked routes | Synthetic canaries, policy decisions and access/request logs | Unauthorized disclosures, prohibited transmissions, useful authorized processing | Daniyar defines ML-boundary cases; Ramazan/Rassul coordinate subsystem checks |
-| RQ4 | Can users inspect findings and identify the next action? | Defined task-based walkthrough against a frozen success rubric | Permitted demonstration packages and actual consenting participants | Task completion, time, citation inspection, correct label interpretation | Daniyar supplies the ML rubric; Ramazan coordinates UX/user evidence, subject to team agreement |
-
-RQ3 and RQ4 are project-level interfaces; this protocol does not transfer platform, security or participant-recruitment responsibilities to the ML owner. Numeric/calendar robustness, contradictions and missing evidence are RQ2 evaluation slices, consistent with the ML literature review.
-
-## Units and documentary labels
-
-A **package** is a selected, versioned tender-document set paired with a selected company-evidence/profile version. A **document family** groups originals, amendments, duplicates, translations and derived variants that must stay in the same data partition. An **atomic requirement** expresses one assessable obligation. A **gold label** is a human-adjudicated reference judgment established independently of system predictions.
-
-| Label | Decision rule | Evidence requirement |
+| Project objective | Evidence and verification method | Measures |
 | --- | --- | --- |
-| `met` | Applicable company evidence establishes satisfaction of the complete atomic condition | Cite the tender obligation and company evidence |
-| `unmet` | Applicable evidence establishes a violation of the atomic condition | Cite the tender obligation and conflicting company commitment/capability |
-| `unknown` | Evidence is missing, ambiguous, incomparable or materially conflicting without a resolution rule | Cite the tender and available relevant sources; identify the unresolved field or conflict |
+| O1: Establish the user problem and scope | Check interview records and the links from findings to proposed requirements | Number of actual user discussions; findings with identifiable supporting records; unresolved assumptions |
+| O2: Justify the proposed approach | Review the literature synthesis and system/technology comparison against their stated criteria | Source coverage; evidence supporting comparison claims; decisions linked to research findings and limitations |
+| O3: Prepare traceable research data | Audit document provenance, annotation and development/test separation | Manifest completeness; annotation agreement; unresolved labels; document-family overlap between partitions |
+| O4: Implement ingestion and retrieval | Test parsing and source resolution; evaluate evidence retrieval and cited answers | Parser acceptance cases; locator validity; Recall@5/@10; complete-evidence retrieval; answer support |
+| O5: Implement company-specific analysis | Compare extracted requirements, statuses and reports with human reference annotations | Extraction F1; status macro-F1; joint requirement/status F1; false passes; supported coverage |
+| O6: Enforce controlled processing | Exercise authorized, unauthorized and policy-blocked requests | Unauthorized disclosures; prohibited outbound requests; correct blocking; successful authorized operations |
+| O7: Evaluate the method fairly | Run paired baseline comparisons using fixed data and configurations | Paired quality differences; latency; model calls, tokens and cost; reproducibility of scoring |
+| O8: Deliver an explainable prototype and report | Inspect the prototype, run the core workflow and repeat setup from the documentation | Task completion; citation inspection; retained review history; successful setup and smoke tests |
 
-Missing company evidence alone cannot establish `unmet`. Policy blocking, parser errors, invalid output and timeouts are processing outcomes, not company-fit labels. Documentary fit does not establish legal eligibility.
+Documentation review verifies the analysis and design objectives. Model experiments and application tests will provide the implementation evidence as the corresponding functionality becomes available.
 
-## B1 and B2: a fair primary comparison
+## 2. Research questions
 
-**B1:** shared deterministic ingestion/retrieval followed by exactly one generation call producing atomic requirements, company-fit statuses, citations and a report in the agreed schema. No hidden generative planning, extraction or repair call forms part of B1. Shared deterministic validation may reject malformed output.
+| Question | Comparison and data | Main measurements | Responsibility |
+| --- | --- | --- | --- |
+| RQ1: Which retrieval configuration best finds the evidence needed for tender analysis? | Lexical retrieval, BGE-M3 dense retrieval and multilingual E5-base on the same annotated corpus and queries | Passage recall, complete-evidence success, ranking quality, retrieval time and index size | Daniyar Kairatov |
+| RQ2: Does staged analysis improve company-specific findings compared with single-prompt RAG? | Paired runs on the same held-out tender/company packages, with a fixed generator and evidence set | Extraction and status quality, citation support, false passes, latency and total model use | Daniyar Kairatov; Rassul Akhmetov coordinates backend and orchestration integration |
+| RQ3: Do the controls enforce the intended organization and data-processing boundaries? | Authorized and adversarial requests across two synthetic organizations, using permitted and prohibited processing routes | Observed disclosures, forbidden transmissions, correct blocking and successful permitted processing | Ramazan Talgatov; Rassul checks backend enforcement and Daniyar checks ML inputs and outputs |
+| RQ4: Can users inspect a finding and identify how to resolve missing evidence? | Task-based walkthroughs using the prototype and, later, the working analysis interface | Completion, time, correct interpretation of statuses, citation inspection and difficulties encountered | Ramazan Talgatov; Daniyar prepares the assessment rubric and Rassul checks report behavior |
 
-**B2-fixed:** the same permitted evidence pack, with typed generation stages for requirement extraction, compliance assessment and reporting. Each later stage receives only authorized original evidence and its preceding typed output. It cannot introduce new documents or external knowledge as company evidence. Deterministic validation is the same as B1. Each generated risk category requires an agreed rubric and evidence; no unexplained risk score is a primary quality endpoint.
+Russian and Kazakh results will be reported separately. Numeric thresholds, calendar constraints, contradictory documents and missing evidence will be examined within RQ2 because these cases directly affect the reliability of an application decision.
 
-The evidence pack is selected deterministically from the same organization-scoped, versioned tender/company pool. Before final runs, specify its query templates, retrieval settings, ordering and token limits. Queries must not come from gold test requirements or a hidden LLM. Freeze the serialized pack and hash, and confirm every scheduled chunk is accessible within each system's actual input limits. Oversized packages need a predefined segmentation/exclusion rule applied equally and reported with counts. Segmentation creates a separately labelled multi-call workflow rather than quietly changing the one-call B1 definition.
+## 3. Evaluation data and reference annotations
 
-Use the same pinned generative model, shared embedding/retrieval configuration, input document/profile versions, output rubric and policy. B2 may have more calls and tokens; record the overhead and impose a declared total ceiling. Extra calls are not free. The primary comparison holds evidence fixed, not total compute.
+### 3.1. Corpus composition
 
-**B2-adaptive**, if evaluated later, may retrieve new evidence per requirement from the same permitted pool. Report it as a separate end-to-end configuration. Its gains can reflect retrieval changes and cannot isolate staging. A separate gold-requirement assessment compares classification with identical evidence to distinguish extraction from assessment errors.
+The basic evaluation unit is a tender package paired with a particular version of a company profile and its supporting documents. The corpus will cover text-based PDF and DOCX files in Russian and Kazakh. The pilot category will follow the approved project scope; the initial proposal identifies IT and office equipment as a candidate.
 
-## RQ1 — Retrieval configuration and language
+Tender documents will come from public sources or be used with permission. Company evidence will use authorized records where these are available. Clearly labelled synthetic company documents will provide controlled cases when access to real records is restricted. Results from real company evidence and synthetic profiles will be reported separately, since success with constructed profiles does not establish performance on real SME records.
 
-**Question:** Which retrieval configuration best finds supporting tender/company evidence?
+Each document will have a manifest entry recording its source, use basis, language, document type, version, acquisition date, organization scope and file hash. Private records will remain in controlled storage. The repository will contain the annotation rules, permitted examples, evaluation configuration and aggregate results.
 
-**Experiment/comparators:** compare PostgreSQL lexical full-text search, BGE-M3 dense and multilingual E5-base dense on identical gold queries, chunks and corpus versions. BM25 is an optional separately implemented lexical comparator, not a claim about the existing PostgreSQL code. Evaluate lexical+dense fusion only with documented ranks, fusion rule and development tuning. Check both tokenizers for truncation on common chunks.
+For planning, the study will aim for 30 independent tender families, with approximately equal Russian and Kazakh coverage. Eighteen families will be assigned to development and twelve to the held-out test set. An initial six-family feasibility pilot will be drawn from the development partition. The held-out set will aim to contain at least 120 atomic requirement assessments across its twelve families. These are provisional collection targets, not achieved counts or a statistical power calculation. The allocation will be revised after the pilot if permissions, document quality or annotation effort make it unsuitable, and fixed before final testing.
 
-**Data:** authorized natural packages with adjudicated relevance/evidence sets, grouped by document family. Separate Russian and Kazakh query/document slices and cross-language cases. Report language pairs rather than assuming a single document language describes every query.
+The corpus report will state the actual number of families, documents, queries and assessed requirements in every partition, together with language and class distributions. A shortage of Kazakh documents or a rare status class will be reported directly rather than concealed through an overall average.
 
-**Metrics:** passage recall@5/@10 over annotated relevant passages; complete-evidence success@5/@10 over queries with an answerable gold evidence set; ranking quality nDCG@10 where graded relevance labels exist; latency and index footprint. Success means at least one complete acceptable set, not merely one plausible passage. Queries lacking sufficient evidence are a separate unanswerable group and are excluded from answerable recall denominators with explicit counts.
+### 3.2. Document families and data separation
 
-**Privacy gate:** filter by organization/membership and selected document versions before retrieval. An unauthorized result is a security failure, regardless of its relevance.
+A document family includes a tender and its amendments, duplicates, translations and related company-profile variants. Connected families will remain in one partition. This prevents a development example from revealing the wording or answer of a test case. Exact hashes, near-duplicate candidates and shared templates will be reviewed before the split is finalized.
 
-**Owner:** Daniyar. Rassul reviews. **Limit:** incomplete relevance labels and small language samples constrain conclusions; multilingual benchmark coverage does not demonstrate Kazakh tender performance.
+Development data will be used to select chunking, retrieval settings, prompts and model parameters. Test data will be used only after those decisions and the scoring rules have been fixed. If test material is exposed during tuning, the affected evaluation will be documented and a new uncontaminated test partition prepared before another final run.
 
-## RQ2 — Staging, company fit and evidence
+Fully synthetic boundary cases will form a separate diagnostic set. They will cover equality at numeric thresholds, incompatible units, calendar versus working days, unresolved amendments, missing values and conflicting company commitments. They support controlled testing but will not be counted as natural tender families.
 
-**Question:** Does B2-fixed improve supported company-specific findings relative to B1?
+### 3.3. Annotation procedure
 
-**Experiment/comparators:** paired B1/B2-fixed runs on the held-out packages above. Separately run gold-requirement classification with the same evidence bundle. Preserve source quotations, intermediate outputs, errors and original predictions before human correction.
+Each annotation will represent one atomic obligation. Annotators will preserve the original text and record its subject, operator, threshold, unit, product scope and applicable date or deadline. The tender citation and company-evidence citation will be stored separately, with document versions and page, paragraph or table-cell locations.
 
-**Data:** tender obligations, company evidence, three-way labels and source locators from independent annotation and adjudication. Synthetic fixtures test boundary behavior but do not replace the natural test set.
-
-**Primary outcome:** macro-F1 on met/unmet/unknown in gold-requirement assessment. Report per-class precision/recall/F1 and a confusion matrix. Treat missing/invalid predictions as a fourth prediction-only `processing_failure` outcome: they create a false negative for the gold class and receive no credit. Their columns remain visible in the confusion matrix; the macro average covers the three gold classes. If a gold class is absent, report fixed-label zero-division handling and also available-class scores, with the limitation explicit.
-
-**Extraction:** match atomic predicted and gold requirements one-to-one by obligation, scope, operator, threshold, unit and deadline. A materially changed numeric/calendar constraint fails the match. Duplicate predictions are false positives, unmatched gold items false negatives. Anonymize system identity for disputed matching. Micro precision/recall/F1 are TP/(TP+FP), TP/(TP+FN) and 2PR/(P+R). Proposed scoring convention: return 0 when a scored precision/recall/F1 denominator is zero and report the underlying counts. Mark entirely inapplicable retrieval/citation subsets as N/A with counts instead of treating them as perfect. Review and freeze these conventions before final scoring.
-
-**End-to-end quality:** joint requirement-and-status precision/recall/F1 uses a true positive only when extraction matches and status is correct. A wrong status contributes both a false positive and a false negative. Missed requirements and spurious findings remain in the denominator. Report false passes (gold unmet/unknown predicted met) and unknown recall alongside aggregate scores.
-
-**Citations:** separately score locator validity, individual citation relevance/support, and complete support of an atomic finding by its cited set. Tender references establish the obligation and company references establish capability. Finding support coverage uses all evidence-dependent generated findings as the denominator, while gold-item supported coverage uses all gold obligations and gives credit only to a correctly extracted/classified finding with adequate support. Report both, so omission and verbosity cannot inflate a single score. Missing evidence cannot support unmet. For unknown, the rationale identifies a missing field or contradiction within the selected evidence scope rather than claiming universal absence.
-
-**Efficiency:** total time, calls, retries, tokens, errors and cost per attempted/successful package. Reporting has no authority to override a failed semantic validation or change unsupported conclusions into successful reports.
-
-**Privacy gate:** equivalent approved original information for both variants, including intermediate state, judge calls and retries. Blocked policy runs are processing outcomes, not unknown company-fit labels.
-
-**Owner:** Daniyar, with Rassul coordinating run/output contracts. **Limit:** documentary fit is not legal eligibility. Staging may underperform, and a JSON-valid answer can still be false. A negative result is admissible.
-
-## RQ3 — Privacy and isolation checks
-
-**Question:** Do the controls enforce the defined processing boundary?
-
-**Experiment/comparators:** positive authorized requests and negative fixtures across two synthetic organizations. Cover direct API access, SQL reads, files, jobs, caches, source-link resolution, document prompt injection, outgoing calls and derived intermediate outputs. Compare policy-allowed and policy-denied routes, not private hosted runs that violate policy. A policy decision cannot be delegated to document text or to an agent.
-
-**Data:** synthetic documents/canaries and permitted test metadata. Real confidential data must not be used to test an unproven boundary.
-
-**Metrics:** attempted unauthorized accesses versus observed disclosures; prohibited calls versus actual transmitted requests; allowed processing successes/failures; correct blocking and actionable error messages. Inspect requests and access logs within an approved environment. A canary test detects defined violations, not every form of leakage. PII masking alone is insufficient.
-
-**Privacy gate:** no permitted route means block without hosted fallback. Runtime authorization, RLS, Gateway and egress controls must exist before these checks can pass; database foreign keys alone do not establish read isolation.
-
-**Owner:** Daniyar owns ML-boundary test definitions and reporting here. Ramazan's platform/privacy area must confirm and execute its subsystem controls with Rassul. This is dependency coordination, not a claim of completed work or reassignment.
-
-**Limit:** zero observed violations is a finite-test result, not proof of absolute privacy. These checks are not a legal-compliance certification.
-
-## RQ4 — Inspection and resolving missing evidence
-
-**Question:** Can users inspect findings and understand the next action?
-
-**Experiment/comparator:** a defined workflow with report, requirement citation, company citation and an unknown case. Compare completion against a task success rubric; a manual-workflow comparison requires a separately agreed design. An internal rehearsal is labelled as such and is not a user study.
-
-**Data:** permitted public/synthetic package and actual consenting participants recruited through TG-T01/TG-T04. No respondents or timings are asserted by this document.
-
-**Metrics:** completed tasks/attempts, time, citation-opening success, correct interpretation of met/unmet/unknown and recorded difficulties. Freeze success criteria before observing participants. Do not infer customer demand from an internal walkthrough.
-
-**Privacy gate:** approved participant context, minimal personal data and controlled recordings. **Owner:** Daniyar supplies the ML interpretation rubric; Ramazan's UX/user-evidence area coordinates participants, with team confirmation pending. **Limit:** convenience samples and learning effects restrict generalization; no baseline time-saving claim without a suitable comparator.
-
-## Dataset freeze and annotation
-
-TG-D03 will specify provenance, grouping, annotation and synthetic cases; the rules below are the minimum required by this protocol. Begin with a development-only feasibility pilot. Confirm natural package counts and language/class balance after permission and annotation assessment. No sample count has been achieved. Final sample sizes, provider, hardware and spend cap are open decisions, not hidden commitments.
-
-Independent annotators label a shared pilot without system predictions. Record pre-adjudication agreement, label counts and Cohen's kappa where suitable. Resolve disagreements using a documented rule or qualified domain review. Keep unresolved legal labels out of documentary ground truth. Split related tenders, amendments, duplicates, derived translations and company variants as groups before tuning. Hash/freeze the test manifest; rebuild after contamination rather than tuning to the contaminated test.
-
-## Provisional targets and interpretation
-
-Planning targets proposed for review: macro-F1 ≥0.80, complete-evidence success@5 ≥0.85 and gold-item supported coverage ≥0.80. These numbers are provisional design targets, not measured results, task-card thresholds or promises to the committee. Confirm/revise them with development evidence and the supervisor before final-test freeze. Do not choose thresholds after viewing test outcomes. B2 has no assumed improvement margin.
-
-No unauthorized external transfer is permitted. That policy invariant is not a negotiable statistical target.
-
-Freeze model/tokenizer revisions, prompts, pack ordering/hash, splitter and retrieval configuration, scoring rules/code revision, dataset manifests, temperature/seed where supported, retry ceiling and price snapshot. Log every call; provider nondeterminism can persist even at temperature zero. Treat repeat executions as repeats, not new independent packages. Use package/family-level paired resampling for uncertainty when sample size permits; disclose unstable intervals. Report median latency and p95 only with sample size and computation method. Preserve failures and exclusions.
-
-## Run record and completion evidence
-
-Proposed run record: code revision, dataset/split hash, organization-scoped package IDs, input/profile versions, evidence-pack hash, model/prompt/retrieval configuration, route decision, predictions, locators, validation errors, elapsed time, tokens, retries, unit-price snapshot and total cost. Store private text in controlled storage. Do not publish model reasoning traces as a requirement; retain sufficient structured decisions and tool/evidence outcomes for audit.
-
-Store the run record in a versioned evaluation export and controlled application storage as appropriate. Map its fields to the reviewed backend/API schema before implementation; this protocol does not establish that every required field or control already exists.
-
-## Planned execution sequence
-
-1. Complete TG-D03's provenance/annotation guide and run a development-only feasibility pilot. Confirm permission, language coverage and annotator capacity.
-2. Group document families, assign partitions and adjudicate labels independently of model predictions. Record all exclusions and unresolved cases.
-3. Compare RQ1 configurations on development data. Select settings without consulting held-out test outcomes.
-4. Freeze the test manifest and the configuration checklist below. Verify equivalent evidence availability and policy permissions for B1 and B2.
-5. Run paired B1/B2-fixed comparisons and the separate gold-requirement assessment. Retain original outputs, failed attempts and costs. Use a declared repeat count and alternate/randomize run order where provider/load effects matter.
-6. Evaluate privacy fixtures with the responsible subsystem owners. Run a separate user walkthrough only with an agreed task rubric and actual participants.
-7. Publish aggregate results, denominators, uncertainty, exclusions and error categories. Retain private evidence in controlled storage. Compare findings with the provisional targets without changing targets after seeing the test.
-
-## Configuration decisions to freeze before final evaluation
-
-| Decision | Required record | M0 status |
+| Status | Annotation rule | Example |
 | --- | --- | --- |
-| Corpus and sample size | Package/family counts by partition, language pair and status; inclusion/exclusion rules | Pending feasibility pilot and permissions; no achieved sample count claimed |
-| Ground truth | Annotation-guide version, annotators, adjudication and pre-adjudication agreement | Planned under TG-D03; execution pending |
-| Retrieval | Lexical configuration, embedding/tokenizer revisions, chunking, k, fusion rule if used | Candidates defined; development selection pending |
-| Generator | Exact model/provider revision, context limits and approved processing route | Pending TG-D04 and policy review |
-| Prompts and outputs | Prompt/schema versions, evidence-pack hashes and deterministic validation rules | Must be pinned before final runs |
-| Resources | Hardware/runtime versions, timeout, call/token/retry ceilings, budget and price snapshot | Pending feasibility measurement and team agreement |
-| Repeats and scoring | Repeat count, run order, scorer revision, matching rules and zero-denominator conventions | Must be frozen before final runs |
-| User walkthrough | Participant recruitment, consent/context, task rubric and success criteria | Team coordination pending; no observations claimed |
+| `met` | Applicable company evidence supports the complete requirement | A tender requires at least 24 months of warranty and the applicable offer promises 36 months |
+| `unmet` | Applicable evidence demonstrates a violation | The same requirement is paired with an applicable 12-month warranty commitment |
+| `unknown` | Evidence is missing, ambiguous, incomparable or conflicting without a rule resolving the conflict | No warranty period is stated, or two applicable-looking offers give different periods and neither supersedes the other |
 
-Pending choices are explicitly tracked. They do not permit unrestricted experiment changes: resolve them using development evidence and record a protocol revision before final-test access. If corpus permissions or Kazakh coverage remain insufficient, narrow the evaluation claim and report the limitation.
+Missing information alone will not be labelled `unmet`. Working days will not be converted to calendar days without the necessary anchor date and calendar. Material differences in units, thresholds or scope will be retained. A file's name or upload date will not by itself establish which document is authoritative.
 
-## TG-D01 acceptance and review record
+Two team members will annotate the pilot independently before inspecting model predictions. Agreement and Cohen's kappa will be reported before adjudication, together with class counts. Disagreements will be used to refine the guide. Final reference labels will be established through independent annotation and documented adjudication; unresolved cases requiring legal interpretation will be kept outside the documentary reference set or recorded separately for specialist review.
 
-| Task-card criterion | Evidence in this protocol |
+Two evidence scopes will be distinguished. End-to-end reference labels use the full authorized package. The separate classification experiment uses labels based on the evidence actually supplied to the model. If retrieval misses a decisive company document, a justified `unknown` can be correct for the supplied evidence while remaining an end-to-end failure. The original full-package label will be retained so that retrieval errors are not hidden by relabelling.
+
+## 4. Baselines and experimental design
+
+### 4.1. Retrieval comparison
+
+RQ1 will compare PostgreSQL lexical full-text search with BGE-M3 dense retrieval and multilingual E5-base dense retrieval. Lexical search provides an interpretable baseline for exact terms and identifiers; dense retrieval tests whether semantic matching improves retrieval of paraphrased requirements. The embedding comparison is motivated by the multilingual retrieval study in [Chen et al. (2024)](https://aclanthology.org/2024.findings-acl.137/), while selection between the candidates will depend on project data.
+
+All configurations will use the same corpus versions, chunk boundaries, query set and organization filters. Tokenizer truncation will be checked for each embedding model. Query language and document language will be recorded separately, including cross-language cases. Annotators will identify relevant passages and acceptable complete evidence sets for each query. Queries with no supporting evidence in the corpus will be evaluated as a separate unanswerable group.
+
+Lexical–dense fusion will be tested as a retrieval ablation after its combination rule and parameters have been selected on development data. Its effect will be reported separately from the comparison of analysis workflows.
+
+### 4.2. Single-prompt and staged analysis
+
+The primary comparison will use two configurations:
+
+| Configuration | Processing after shared ingestion and retrieval | Output |
+| --- | --- | --- |
+| B1: single-prompt RAG | One generation call receives the selected tender and company passages | Atomic requirements, statuses, explanations and citations in the agreed output schema |
+| B2: staged RAG | Separate extraction, assessment and reporting stages exchange structured outputs and retain access to the same permitted source passages | The same final output schema, with intermediate requirements and assessments available for analysis |
+
+B1 is a practical lower-complexity alternative. B2 will be considered useful only if any improvement in supported findings justifies its additional latency, model use and integration effort. The relevance of explicit support checking is informed by [Asai et al. (2024)](https://proceedings.iclr.cc/paper_files/paper/2024/hash/25f7be9694d7b32d5cc670927b8091e1-Abstract-Conference.html). TenderGuard will evaluate its own structured workflow; reproducing Self-RAG's training procedure is outside this comparison.
+
+The two configurations will use the same generator revision, source-document versions, company profile and permitted original information. Their retrieved evidence will be serialized and hashed before the paired run. Ordering, token limits and truncation rules will be identical. B2's intermediate outputs are part of its processing method and will be retained for error analysis.
+
+Shared retrieval will use predefined queries derived from the user request and available document metadata. Human reference requirements will not be used to select evidence for the end-to-end experiment. Reference-based queries are permitted in the separate retrieval benchmark, where retrieval itself is the object of measurement.
+
+No generative planning or repair calls will be hidden inside B1. Both configurations will use the same deterministic schema and reference validation. Invalid output will be retained as a processing failure. Packages exceeding the input limit will follow a common exclusion or segmentation rule fixed before testing; segmented multi-call processing will be reported as a separate configuration.
+
+An additional assessment experiment will provide both systems with the same human-annotated requirements and evidence. Comparing this result with end-to-end performance will help distinguish extraction failures from assessment failures. Adaptive retrieval that searches for further passages during analysis will also be reported separately, because it changes the evidence available to the system.
+
+### 4.3. Diagnostic comparisons
+
+A development ablation will compare the staged workflow with and without an explicit support-check instruction in the assessment stage. The original evidence, generator and stage structure will be held constant. Server authorization and mandatory output validation will remain enabled. This comparison will test whether the support check reduces false passes or merely increases omissions.
+
+A second diagnostic will move the same decisive passage to the beginning, middle and end of an otherwise fixed evidence set. Status and citation-support changes will be measured. This follows the context-position problem examined by [Liu et al. (2024)](https://aclanthology.org/2024.tacl-1.9/). The main B1/B2 experiment will subsequently use one fixed ordering so that position changes cannot explain a difference between configurations.
+
+## 5. Quality measures
+
+### 5.1. Retrieval
+
+Passage Recall@5 and Recall@10 will measure how much annotated relevant evidence appears among the highest-ranked results. For each answerable query, recall is the number of relevant retrieved passages divided by the number of relevant reference passages. Scores will be averaged across queries and reported with their denominators.
+
+Complete-evidence success@5 and success@10 will measure the proportion of answerable queries for which the retrieved results contain at least one complete acceptable evidence set. This is necessary because retrieving a tender clause without the associated company evidence may be insufficient for an assessment.
+
+Where graded relevance annotations are available, nDCG@10 will measure ranking quality. Proposed relevance grades are 0 for irrelevant, 1 for partially relevant and 2 for directly relevant passages, using gain `2^grade − 1` and discount `log2(rank + 1)`. These definitions will be settled during annotation. Unanswerable queries will be reported separately rather than assigned a recall value with an empty denominator.
+
+### 5.2. Extraction and status assignment
+
+Predicted requirements will be matched one-to-one with reference obligations using their meaning, scope and normalized conditions. A changed threshold, unit or deadline that affects the decision will invalidate the match. Duplicate predictions will count as false positives; missed obligations will count as false negatives. Disputed matches will be reviewed without revealing the producing configuration.
+
+Extraction precision, recall and F1 will be calculated as:
+
+`Precision = TP / (TP + FP)`  
+`Recall = TP / (TP + FN)`  
+`F1 = 2TP / (2TP + FP + FN)`
+
+The primary classification measure will be macro-F1 across `met`, `unmet` and `unknown` in the reference-requirement experiment. Per-class precision, recall and F1, class counts and the confusion matrix will accompany it. A prediction-only `processing_failure` column will retain invalid or missing answers; these count as false negatives for their reference classes. Undefined scored precision/recall/F1 values will be set to zero, with the underlying counts reported. If a reference class is absent, both the fixed three-class score and the score over represented classes will be shown.
+
+End-to-end requirement-and-status F1 will count a true positive only when both the obligation and its status are correct. A matched obligation with a wrong status contributes one false positive and one false negative. This prevents high classification scores from concealing missed requirements.
+
+False passes will receive separate attention. The false-pass rate is the number of reference `unmet` or `unknown` cases predicted as `met`, divided by all reference `unmet` and `unknown` cases. The report will also show the erroneous-pass share among predicted `met` findings and recall for `unknown` cases.
+
+Any reported risk category will be checked against a written rubric and human reference judgments. Category agreement and disagreements will be reported separately from documentary status. A numerical risk score will be evaluated only if its meaning, reference scale and acceptance conditions have been defined.
+
+### 5.3. Citations and cited answers
+
+Citation evaluation will distinguish a reference that opens correctly from evidence that supports the associated claim. This distinction follows the evaluation approach in [Gao et al. (2023)](https://aclanthology.org/2023.emnlp-main.398/).
+
+| Measure | Scoring unit and denominator |
 | --- | --- |
-| Each research question has an experiment, comparator, data source, metric and owner | Overview table and RQ1–RQ4 sections |
-| Each question specifies a privacy gate and interpretation limit | Privacy-gate and limitation paragraphs within RQ1–RQ4 |
-| Numeric targets are explicitly provisional | Provisional targets and interpretation section |
-| Baseline and staged comparisons use equivalent permitted inputs | B1/B2-fixed definitions, frozen-pack rules and run records |
+| Locator validity | Citation links resolving to the intended document version and location, divided by all generated citation links |
+| Citation precision | Individually useful supporting citations, divided by all generated citations; a redundant or irrelevant reference receives no credit |
+| Finding support | Atomic evidence-dependent findings fully supported by their cited set, divided by all generated evidence-dependent findings; missing citations receive no credit |
+| Supported gold coverage | Reference obligations correctly extracted and classified with adequate support, divided by all reference obligations |
 
-**Document verification:** all four research questions have the required planning fields; B1/B2 inputs and differences are specified; language slices, missing/invalid outputs, leakage, privacy and interpretation limits are covered. These are document checks, not executed model or security tests.
+For `met` and `unmet`, support must establish both the tender condition and the relevant company fact. For `unknown`, the explanation must identify the unresolved field or conflict within the assessed evidence scope. Automatic entailment scoring may assist review only after calibration against human labels on development cases; it will not define the reference labels.
 
-**Outstanding review:** Rassul Akhmetov's review date, substantive comments, requested corrections and acceptance are pending. Confirm the cross-team RQ3/RQ4 interfaces with Ramazan and Rassul. Keep task status at the appropriate in-progress/review state until the actual task-card acceptance and review requirements are met.
+Cited question answering will use a separate set of answerable and unanswerable questions. Human assessment will record factual correctness, supporting citations and whether the answer adds unsupported claims. The question set will include requests about quantities, delivery periods, warranty terms and document references. Questions without sufficient evidence should receive an explicit explanation of what is missing.
 
-M0 deliverable: this evaluation protocol v1. Final corpus collection, model training, completed security tests and final model experiments are later work; this document must not be presented as their execution evidence.
-      
+### 5.4. Efficiency
+
+For every attempted package, measurements will include elapsed time, model calls, input/output tokens, retries and cost. Failed runs will remain in the accounting. Ingestion and indexing time will be reported separately from analysis time so that repeated use of an existing index does not conceal initial processing costs. The report will distinguish application processing time from provider response time where the instrumentation permits it.
+
+## 6. Application verification
+
+Each test case will identify the functional or non-functional requirement it verifies, its inputs, expected outcome and observable evidence. The test inventory will use the requirement identifiers adopted in the consolidated specification, allowing a reviewer to trace a requirement through its component and test.
+
+| Test level | TenderGuard behavior to verify | Expected evidence |
+| --- | --- | --- |
+| Unit | File validation; paragraph/table extraction; source-locator mapping; numeric operators; unit and date handling; label rules; schema validation; policy decisions | Repeatable fixtures with expected values and explicit error outcomes |
+| Integration | Upload → parsed text → chunks → retrieval; profile version → assessment; stage handoffs → persisted findings; citations → original source; Privacy Gateway → provider adapter | Tests showing that document versions, organization context and evidence references remain consistent across boundaries |
+| End-to-end | Sign in, select an organization, upload documents, select a profile, run analysis, inspect findings and record a review; rerun with revised evidence | A repeatable scenario demonstrating the core workflow and preserved previous run history |
+| Security | Unauthorized API/database/file access; cross-tenant jobs, search and caches; forged identifiers; indirect prompt injection; prohibited external routes | Allowed/denied test records, controlled outbound observations and an incident record for any disclosure |
+| Recovery | Invalid files, unsupported scans, provider failure, timeout and worker interruption | Safe failure states, bounded retries and recovery without mixing tenants or replacing the original run record |
+| Load | Concurrent uploads, queued analyses and report access | Request/job counts, completion and error rates, response/queue times and resource use under a declared workload |
+
+Security tests will use two synthetic organizations with distinct documents and recognizable test strings. A successful test must show both that prohibited access is blocked and that the corresponding authorized request succeeds. The same checks apply to derived outputs and retries. Document removal, retention and access changes will also be checked against the agreed requirements for indexes, caches, jobs and logs. Restricted information must not be transmitted when the processing policy blocks the selected route; failure of a local route must not authorize an external fallback.
+
+For the initial load test, workloads of one, three and five concurrent users are proposed, with twenty job attempts at each level. A stubbed provider with documented behavior will first isolate application and queue overhead. Real-provider analysis latency will be measured separately within the available budget. Median and maximum times will be reported with sample counts; any p95 estimate will state the sample size and calculation method. A particular latency limit will be adopted only after the requirements and pilot measurements establish a defensible value.
+
+Coverage will be used to identify untested code paths alongside scenario-based tests. The team's longer-term target of at least 95% coverage will be tracked with the selected coverage definition and scope; a coverage percentage will not substitute for evidence that access restrictions, citations or assessment rules behave correctly.
+
+## 7. User evaluation
+
+Prototype walkthroughs will first involve at least two people outside the team, in line with the prototype requirement. A later evaluation of the working interface will aim to recruit five representatives of the intended users, subject to availability and consent. These activities will be reported separately from the interviews used to establish the project problem.
+
+Participants will complete four tasks: locate a tender requirement, inspect the associated company evidence, explain one reported status and identify the information needed to resolve an `unknown` finding. Task completion will require the correct source or explanation, rather than simply reaching the right screen. The study will record completion, time, assistance required and observed difficulties. Participants will use public or synthetic material rather than confidential company records.
+
+A manual-workflow comparison will be made only if equivalent tasks and a defined order/counterbalancing procedure can be arranged. Without that comparison, recorded time will describe usability and will not be interpreted as time saved. Results from a small convenience sample will be used to identify design problems, with participant characteristics and limitations stated.
+
+## 8. Measurement conditions and analysis
+
+Before final testing, the corpus manifest, annotations, chunking, retrieval settings, prompts, output schema and scoring procedure will be fixed. The experiment record will identify the generator and embedding revisions, tokenizer, sampling parameters, supported seed settings, context limits, timeout/retry ceilings and permitted processing route. Local measurements will record CPU, GPU, memory, software versions and model precision. Hosted measurements will record the model identifier, measurement period and available provider information.
+
+B1 and B2 will each be run three times on every held-out package using the same sampling settings. Run order will be alternated or randomized within repetitions to reduce systematic effects from provider load. Scores will be calculated for each full repetition and then summarized; repeated executions will not be counted as additional independent packages. Retrieval warm-up and cache conditions will be documented and kept comparable.
+
+Paired differences will be reported because both configurations process the same packages. Where the sample supports it, uncertainty will be estimated through family-level paired bootstrap resampling, retaining the related requirements and repetitions within their families. Small language/class subsets and unstable intervals will be identified explicitly.
+
+Every run will retain its configuration, document/profile versions, evidence-set hash, original predictions, citations, validation outcomes, timing and model-use records. Private source text will stay in controlled storage. The evaluation export will contain enough permitted information to reproduce scoring and trace a reported finding to the assessed input.
+
+Paid experiments will use the remaining allocation within the team's stated $0–50 project budget. Expected token use and charges will be estimated before the final run, and a maximum run budget enforced. The exact generator, resource ceilings and final corpus allocation will be settled from the development pilot and recorded before the held-out test is accessed.
+
+## 9. Success criteria and interpretation
+
+The initial planning targets are status macro-F1 of at least 0.80, complete-evidence success@5 of at least 0.85 and supported gold coverage of at least 0.80. These are provisional engineering targets to review against the pilot, rather than thresholds established by the cited studies. They will be finalized before testing and reported alongside false passes, class/language results and processing failures.
+
+All defined unauthorized-access and prohibited-transfer cases are expected to be blocked, with authorized control cases remaining usable. Any observed disclosure will require correction and re-testing. Passing these scenarios supports the tested processing boundary; it does not establish protection against every possible attack.
+
+The final analysis will explain where errors originate: parsing, evidence retrieval, requirement extraction, numeric/calendar interpretation, status assignment, citation support or inter-stage reporting. Quality gains will be considered together with their resource cost. Higher precision accompanied by lower supported coverage will be reported as a trade-off, and similar quality at lower cost may favor the simpler baseline.
+
+The evaluation will support conclusions within the selected tender category, languages, document types and evidence conditions. Performance on synthetic company profiles, limited Kazakh samples or a small participant group will not be generalized to all procurement settings. Negative and inconclusive findings will remain part of the results and will inform the final system design.
