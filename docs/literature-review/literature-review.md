@@ -167,3 +167,73 @@ Split by document family and related company-profile variants before tuning, and
 The review connects each publication's method, evaluation and limitations to a TenderGuard design decision. Team members confirm the interpretations for presentation; Ramazan coordinates peer review and records any requested corrections. Review approval and task statuses remain with the team.
 
 Maintain one literature review under Component 3, retaining unique publication identifiers when adding research. Transfer the proposed decisions into the requirements, architecture and evaluation documents after team review. Incorporate review comments directly into this document.
+
+## Additional ML and retrieval articles — TG-D02
+
+**Contributor:** Daniyar Kairatov. **Reviewer:** Rassul Akhmetov; review pending.
+
+The eight-source review above is supplemented by the following four scientific publications, identified as L19–L22. The combined document therefore contains **12 unique scientific publications: eight existing sources and four sources contributed under TG-D02**. These additions address domain adaptation, Kazakh question answering, dataset integrity and the use of long evidence contexts. Published results below belong to the cited studies; no TenderGuard model experiment is claimed.
+
+## L19. Domain adaptation: retrieval versus fine-tuning
+
+**Method and data.** Tugambayeva and Sakhipov compare FAISS retrieval with Mistral-7B over 238 aviation documents against T5-small adapted with LoRA using 920 context–question pairs. Automatic evaluation uses 116 examples; preliminary expert assessment uses 15 questions per approach.
+
+**Findings.** Table 1 reports BLEU of 24.77% for fine-tuned T5 and 3.02% for RAG, while aviation-term coverage is 43.97% and 92.24%, respectively. The disagreement shows that reference similarity and domain terminology measure different properties.
+
+**Critical assessment.** Model architecture, capacity and training change together: approximately 60 million versus seven billion parameters. The comparison cannot isolate the effect of retrieval. The small author-led expert assessment also limits generalization. Question generation differs from eligibility assessment.
+
+**TenderGuard implication.** Begin with an evidence-retrieval baseline and justify any later fine-tuning through error analysis. Prioritize correct statuses and supporting citations over BLEU. Keep the generator and evidence fixed when comparing analysis workflows.
+
+**Evidence locations:** Methods and evaluation, pp. 156–159; Table 1, p. 159; expert assessment, p. 160; discussion, pp. 160–162.
+
+## L20. Multilingual adaptation for Kazakh QA
+
+**Method and data.** Tleubayeva and Shomanov examine multilingual question-answering models, adaptation and augmentation for Kazakh, including Kazakh sKQuAD evaluation. Their results section combines analysis with findings from another study; it should not be described as a wholly reproduced, controlled benchmark.
+
+**Findings.** Table 3 reports mT5 F1 of 75.7213 after fine-tuning. However, mDeBERTa-v3-base-SQuAD2 is listed at 80.6928 before and 79.7787 after fine-tuning. The abstract's claim that mT5 has the highest F1 therefore does not describe the entire table consistently.
+
+**Critical assessment.** Model conditions and result provenance require careful separation. QA token-overlap scores do not demonstrate correct tender citations or numeric reasoning. Translation and augmentation can also introduce related examples across data partitions.
+
+**TenderGuard implication.** Evaluate Russian and Kazakh separately, retaining sample counts, checkpoint identifiers and data versions. Use human-reviewed numeric and calendar cases. Treat multilingual capability as a hypothesis to test, rather than selecting a model from the abstract's ranking.
+
+**Evidence locations:** Methods, pp. 91–93; results and Table 3, pp. 93–95; discussion, pp. 95–96.
+
+## L21. Near-duplicate detection and dataset integrity
+
+**Method and data.** Kazagasheva and colleagues combine text canonicalization, lexical filtering, semantic embeddings and approximate-neighbor retrieval to reduce candidate comparisons. Their Kazakh academic-abstract dataset includes 11,851 pairs with authentic texts and controlled synthetic transformations.
+
+**Findings.** The study reports computational savings relative to exhaustive comparison and a trade-off between candidate filtering and duplicate recall. Figures 12–13 present performance information. No exact speedup is adopted here without a clearly reproducible numeric comparison.
+
+**Critical assessment.** Academic abstracts and synthetic paraphrases differ from tender amendments. Pair-level stratification alone does not establish independence between source families. Aggressive normalization can erase meaningful changes in amounts, deadlines or negation.
+
+**TenderGuard implication.** Group original tenders, amendments, translations and derived examples before splitting development and test data. Use hashes and similarity candidates followed by review. Similarity may identify related documents, but it must not establish equivalence between obligations.
+
+**Evidence locations:** Data, pp. 247–250; methodology, pp. 251–256; results and limitations, pp. 257–258. The publisher/PDF author order is used; a differing DOI-registration order was observed during preparation.
+
+## L22. Evidence position in long contexts
+
+**Method and data.** Liu and colleagues vary the position of relevant information in multi-document question answering and synthetic key-value retrieval. The QA experiments use Natural Questions-derived examples with distractor documents.
+
+**Findings.** Several tested models perform best when evidence appears near the beginning or end of the context and worse when it appears in the middle. A larger advertised context window does not ensure effective use of all included evidence.
+
+**Critical assessment.** The controlled tasks do not estimate procurement accuracy or the behavior of every later model. The findings motivate context-construction tests; they do not prove that chunking or a multi-agent system resolves the problem.
+
+**TenderGuard implication.** Version evidence ordering and truncation. Include long-document and distractor cases in development evaluation. Keep evidence content and order identical in the primary single-prompt versus staged comparison so context changes cannot explain an apparent staging benefit.
+
+**Evidence locations:** Sections 2–3, especially Section 2.3; published article, pp. 157–173.
+
+## Synthesis of the four ML articles
+
+The four studies complement the agent, privacy and evaluation findings above. Domain-reference similarity can disagree with domain usefulness (L19), Kazakh model rankings depend on evaluation conditions (L20), related documents require careful grouping (L21), and long context does not guarantee reliable use of evidence (L22).
+
+For TenderGuard, these findings support evidence-based status and citation checks, separate Russian/Kazakh evaluation, document-family splitting, preservation of numeric and calendar constraints, and a fixed evidence pack for the B1/B2 comparison. TG-D01 specifies the evaluation conditions, TG-D03 develops the corpus and annotation rules, and TG-D04 justifies candidate technologies. These are proposed design choices to evaluate, not measured improvements or guarantees.
+
+## Additional references (9–12)
+
+9. Tugambayeva, A., & Sakhipov, A. (2026). AI-based question generation for aviation training: Comparing retrieval-augmented generation and fine-tuned models. *Scientific Journal of Astana IT University, 25*. https://doi.org/10.37943/25VYNZ9998. [Publisher record](https://journal.astanait.edu.kz/index.php/ojs/article/view/967).
+
+10. Tleubayeva, A., & Shomanov, A. (2024). Comparative analysis of multilingual QA models and their adaptation to the Kazakh language. *Scientific Journal of Astana IT University, 19*, 89–97. https://doi.org/10.37943/19WHRK2878. [Publisher record](https://journal.astanait.edu.kz/index.php/ojs/article/view/626).
+
+11. Kazagasheva, V., Kuchanskyi, O., Biloshchytska, S., & Kantayeva, D. (2026). Scalable near-duplicate detection in Kazakh scientific texts via semantic embeddings and optimized candidate filtering. *Scientific Journal of Astana IT University, 25*. https://doi.org/10.37943/25NVVS5297. [Publisher record](https://journal.astanait.edu.kz/index.php/ojs/article/view/1029).
+
+12. Liu, N. F., Lin, K., Hewitt, J., Paranjape, A., Bevilacqua, M., Petroni, F., & Liang, P. (2024). Lost in the middle: How language models use long contexts. *Transactions of the Association for Computational Linguistics, 12*, 157–173. https://doi.org/10.1162/tacl_a_00638. [Primary publication and full text](https://aclanthology.org/2024.tacl-1.9/).
