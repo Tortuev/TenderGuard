@@ -106,6 +106,7 @@ docs/database/                  ER diagram, data contracts and limitations
 docs/project-proposal/          Project proposal and scope
 docs/literature-review/         Shared literature review
 docs/system-comparison/         Existing systems comparison and its evidence
+docs/architecture/              Architecture, contracts, editable diagrams and SVG exports
 compose.yaml                   Local PostgreSQL 17 service
 ```
 
@@ -127,6 +128,7 @@ before connecting any real company documents.
 - [Project proposal](docs/project-proposal/proposal.md)
 - [Literature review](docs/literature-review/literature-review.md)
 - [Existing systems comparison: CIS platforms](docs/system-comparison/existing-systems.md)
+- [Architecture and integration contracts](docs/architecture/architecture.md)
 
 The proposal defines the target scope for TG-R01 and its unresolved decisions.
 The separate requirements specification is planned. Team and supervisor approval are pending.
@@ -152,7 +154,7 @@ add working links as those materials become available.
 | 4 | Existing systems comparison | [Five CIS systems, ten criteria and observation evidence](docs/system-comparison/existing-systems.md) |
 | 5 | Technology comparisons and decisions | `docs/technology-comparison/technologies.md` |
 | 6 | Functional and non-functional requirements | `docs/requirements/requirements.md` |
-| 7 | Architecture, editable diagrams and readable exports | `docs/architecture/` |
+| 7 | Architecture, editable diagrams and readable exports | [Architecture, diagrams, data model and contracts](docs/architecture/architecture.md) |
 | 8 | UX prototype link, screens and scenarios | `docs/ux/` |
 | 9 | Verification and evaluation protocol | `docs/evaluation-plan/evaluation-plan.md` |
 | 10 | Responsibilities, milestones, risks, dependencies and tracker | `docs/project-management/project-management.md` |

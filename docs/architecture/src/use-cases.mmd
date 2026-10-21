@@ -1,0 +1,21 @@
+flowchart LR
+    analyst["«actor»<br/>SME analyst<br/>member or owner"]
+    viewer["«actor»<br/>Manager / viewer"]
+    owner["«actor»<br/>Organization owner"]
+    researcher["«actor»<br/>Research evaluator"]
+    subgraph system["TenderGuard — proposed use cases"]
+      direction TB
+      UC01(["UC-01 Sign in and select organization<br/>AR-01"])
+      UC02(["UC-02 Maintain company evidence versions<br/>AR-02"])
+      UC03(["UC-03 Upload and inspect tender documents<br/>AR-03, AR-11"])
+      UC04(["UC-04 Run evidence-based analysis<br/>AR-04, AR-05, AR-09, AR-10, AR-11, AR-12"])
+      UC05(["UC-05 Read report and inspect citations<br/>AR-06, AR-12"])
+      UC06(["UC-06 Ask a cited question<br/>AR-07, AR-09, AR-11"])
+      UC07(["UC-07 Review findings and create a new run<br/>AR-08"])
+      UC08(["UC-08 Manage members, policy and audit<br/>AR-01, AR-09"])
+      UC09(["UC-09 Evaluate fixed baselines<br/>AR-13"])
+    end
+    analyst --> UC01 & UC02 & UC03 & UC04 & UC05 & UC06 & UC07
+    viewer --> UC01 & UC05
+    owner --> UC01 & UC08
+    researcher --> UC09
