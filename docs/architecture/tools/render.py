@@ -1,4 +1,4 @@
-"""Render architecture sources with a pinned Mermaid CLI; run from any directory."""
+"""Render the architecture document's Mermaid blocks as portable SVG exports."""
 
 import argparse
 import os
@@ -17,7 +17,23 @@ def main():
         "--browser", help="Chrome/Chromium executable, if using a local browser"
     )
     args = parser.parse_args()
-    base = Path(__file__).resolve().parent
+    tools = Path(__file__).resolve().parent
+    base = tools.parent
+    document = (base / "architecture.md").read_text(encoding="utf-8")
+    blocks = re.findall(
+        r"<!-- diagram:([\w-]+) -->\s*```mermaid\n(.*?)\n```", document, re.DOTALL
+    )
+    diagrams = dict(blocks)
+    required = {
+        "context",
+        "use-cases",
+        "components",
+        "data-model",
+        "analysis-flow",
+        "deployment",
+    }
+    if len(blocks) != len(diagrams) or diagrams.keys() != required:
+        raise SystemExit("Expected six uniquely named architecture diagrams.")
     if args.mmdc:
         command = [args.mmdc]
     else:
@@ -37,8 +53,10 @@ def main():
                 encoding="utf-8",
             )
             browser_config = ["--puppeteerConfigFile", str(config)]
-        for source in sorted((base / "src").glob("*.mmd")):
-            output = base / "export" / (source.stem + ".svg")
+        for name, code in sorted(diagrams.items()):
+            source = Path(temporary) / (name + ".mmd")
+            source.write_text(code + "\n", encoding="utf-8")
+            output = base / "export" / (name + ".svg")
             subprocess.run(
                 command
                 + [
@@ -47,7 +65,7 @@ def main():
                     "--output",
                     str(output),
                     "--configFile",
-                    str(base / "mermaid-config.json"),
+                    str(tools / "mermaid-config.json"),
                     "--svgId",
                     source.stem,
                     "--backgroundColor",

@@ -14,20 +14,23 @@ A completed design is not evidence that their runtime controls already work.
 
 ## Package contents
 
-| View | Editable source | Readable export | Purpose |
+The six diagrams are editable Mermaid code blocks in this document and render
+directly in its GitHub preview. This is their single source of truth. Vector
+exports remain available for the report and predefence submission.
+
+| View | Mermaid diagram | SVG export | Purpose |
 | --- | --- | --- | --- |
-| System context | [context.mmd](src/context.mmd) | [context.svg](export/context.svg) | Users, external systems and the external model boundary |
-| Use cases | [use-cases.mmd](src/use-cases.mmd) | [use-cases.svg](export/use-cases.svg) | Actors and requirement-linked actions |
-| Components | [components.mmd](src/components.mmd) | [components.svg](export/components.svg) | Responsibilities, interfaces and the four processing stages |
-| Entity relationships | [data-model.mmd](src/data-model.mmd) | [data-model.svg](export/data-model.svg) | Existing tables and tenant-aware relationships |
-| Analysis sequence | [analysis-flow.mmd](src/analysis-flow.mmd) | [analysis-flow.svg](export/analysis-flow.svg) | Ingestion, sealed inputs, policy checks and result publication |
-| Deployment | [deployment.mmd](src/deployment.mmd) | [deployment.svg](export/deployment.svg) | Private services, file storage and controlled model egress |
+| System context | [View diagram](#system-context) | [context.svg](export/context.svg) | Users, external systems and the external model boundary |
+| Use cases | [View diagram](#actors-and-use-cases) | [use-cases.svg](export/use-cases.svg) | Actors and requirement-linked actions |
+| Components | [View diagram](#component-responsibilities) | [components.svg](export/components.svg) | Responsibilities, interfaces and the four processing stages |
+| Entity relationships | [View diagram](#data-model-and-required-evolution) | [data-model.svg](export/data-model.svg) | Existing tables and tenant-aware relationships |
+| Analysis sequence | [View diagram](#processing-and-failure-semantics) | [analysis-flow.svg](export/analysis-flow.svg) | Ingestion, sealed inputs, policy checks and result publication |
+| Deployment | [View diagram](#deployment-boundary) | [deployment.svg](export/deployment.svg) | Private services, file storage and controlled model egress |
 
 [Integration contracts](contracts.md) define the proposed API, stage inputs,
-citations, outcomes and lifecycle. The
-[supplied supervisor diagram](reference/supervisor-architecture.svg) is retained
-as a design input. Its scaffold implementation labels do not describe the current
-TenderGuard checkout; the implementation statement above takes precedence.
+citations, outcomes and lifecycle. The refinements below explain how the supplied
+supervisor architecture is adapted to the company-evidence workflow and current
+repository implementation.
 
 ## Refinements of the supplied architecture
 
@@ -78,7 +81,29 @@ with their own acceptance checks; none may silently bypass the core controls.
 
 ## System context
 
-![System context](export/context.svg)
+<!-- diagram:context -->
+
+```mermaid
+flowchart LR
+    analyst["SME analyst<br/>member or owner"]
+    viewer["Manager / viewer"]
+    owner["Organization owner"]
+    researcher["Research evaluator"]
+    portal["Procurement portals<br/>manual sourcing"]
+    system["TenderGuard<br/>company evidence + tender analysis<br/>cited reports + controlled processing"]
+    hosted["Approved hosted model provider<br/>outside operator control"]
+    portal -->|Public tender download| analyst
+    analyst -->|Tender files, company evidence, questions| system
+    system -->|Findings, citations, unknowns, job state| analyst
+    viewer -->|Authorized read requests| system
+    system -->|Permitted reports and evidence| viewer
+    owner -->|Membership and processing policies| system
+    system -->|Safe audit and route decisions| owner
+    researcher -->|Permitted fixed evaluation fixtures| system
+    system -->|Supported outputs and measurements| researcher
+    system -->|Only permitted minimal context via Inference Gateway| hosted
+    hosted -->|Untrusted model output| system
+```
 
 The analyst obtains documents through permitted channels and uploads them; no
 automated integration with procurement portals is assumed. Authorized managers
@@ -89,7 +114,31 @@ permission to read a document is not permission to send it to a model provider.
 
 ## Actors and use cases
 
-![Use cases](export/use-cases.svg)
+<!-- diagram:use-cases -->
+
+```mermaid
+flowchart LR
+    analyst["«actor»<br/>SME analyst<br/>member or owner"]
+    viewer["«actor»<br/>Manager / viewer"]
+    owner["«actor»<br/>Organization owner"]
+    researcher["«actor»<br/>Research evaluator"]
+    subgraph system["TenderGuard — proposed use cases"]
+      direction TB
+      UC01(["UC-01 Sign in and select organization<br/>AR-01"])
+      UC02(["UC-02 Maintain company evidence versions<br/>AR-02"])
+      UC03(["UC-03 Upload and inspect tender documents<br/>AR-03, AR-11"])
+      UC04(["UC-04 Run evidence-based analysis<br/>AR-04, AR-05, AR-09, AR-10, AR-11, AR-12"])
+      UC05(["UC-05 Read report and inspect citations<br/>AR-06, AR-12"])
+      UC06(["UC-06 Ask a cited question<br/>AR-07, AR-09, AR-11"])
+      UC07(["UC-07 Review findings and create a new run<br/>AR-08"])
+      UC08(["UC-08 Manage members, policy and audit<br/>AR-01, AR-09"])
+      UC09(["UC-09 Evaluate fixed baselines<br/>AR-13"])
+    end
+    analyst --> UC01 & UC02 & UC03 & UC04 & UC05 & UC06 & UC07
+    viewer --> UC01 & UC05
+    owner --> UC01 & UC08
+    researcher --> UC09
+```
 
 Actor boxes use the UML `actor` stereotype and use cases use oval shapes. An owner
 may also act as an analyst; a viewer has read access only. Every action rechecks
@@ -104,7 +153,57 @@ and permitted fixtures; this role does not grant unrestricted production access.
 
 ## Component responsibilities
 
-![Components and processing stages](export/components.svg)
+<!-- diagram:components -->
+
+```mermaid
+flowchart TB
+    browser["Browser<br/>untrusted client"]
+    proxy["Caddy<br/>TLS / same-origin routing"]
+    web["Next.js interface<br/>forms, report, citations, job state"]
+    subgraph api["FastAPI process — proposed modular backend"]
+      auth["Identity and authorization<br/>active membership + role checks"]
+      evidence["Document and company service<br/>validation + immutable versions"]
+      runs["Run / report / review service<br/>sealed inputs + authorized reads"]
+      qa["Question-answer service<br/>run-scoped evidence"]
+    end
+    subgraph worker["Durable worker process — proposed"]
+      jobs["Job runner<br/>claim, lease, retry, fenced commit"]
+      ingest["Stage 1: ingestion<br/>parse, locate, chunk, embed"]
+      extract["Stage 2: requirement extraction<br/>atomic cited requirements"]
+      match["Stage 3: documentary matching<br/>met / unmet / unknown"]
+      report["Stage 4: risk and report<br/>bounded flags + deterministic summary"]
+      retrieval["Authorized retrieval<br/>manifest filter + lexical/dense fusion"]
+    end
+    gateway["Inference Gateway service — proposed<br/>policy + minimization + adapters<br/>all embedding and generation calls"]
+    local["Local embedding runtime — planned core<br/>optional local generative runtime"]
+    hosted["Approved hosted model API<br/>permitted contexts only"]
+    db[("PostgreSQL 17<br/>relational foundation implemented<br/>RLS / vectors / lifecycle extensions planned")]
+    files[("Private FileStore<br/>validated keys + access checks<br/>planned")]
+    audit[("Safe model / access audit<br/>tenant-scoped records<br/>planned")]
+    evaluation["Offline evaluation harness<br/>same retrieval and gateway contracts"]
+    browser --> proxy
+    proxy --> web
+    proxy --> auth
+    web -->|Same-origin API requests| auth
+    auth --> evidence & runs & qa
+    evidence --> files
+    api -->|Authorized metadata and result transactions| db
+    runs -.->|Enqueue and claim through PostgreSQL| jobs
+    jobs --> ingest --> extract --> match --> report
+    worker -->|Manifest-scoped reads and fenced publication| db
+    ingest --> files
+    extract & match & qa --> retrieval
+    worker -->|All stage and embedding calls| gateway
+    qa -->|Question generation and query embedding| gateway
+    gateway -->|Approved internal route| local
+    gateway -->|Approved external route only| hosted
+    gateway --> audit
+    gateway -->|Read effective policy and active scope| db
+    audit --> db
+    auth & runs --> audit
+    evaluation -.-> jobs
+    evaluation -.-> qa
+```
 
 FastAPI hosts the application modules; a separate worker performs durable
 processing. Stage 1 is a technical ingestion stage and does not require an LLM
@@ -136,7 +235,36 @@ requirement and a component-5 decision.
 
 ## Data model and required evolution
 
-![Existing relational model](export/data-model.svg)
+<!-- diagram:data-model -->
+
+```mermaid
+erDiagram
+    organizations ||--o{ memberships : has
+    users ||--o{ memberships : joins
+    organizations ||--o{ tenders : owns
+    organizations ||--o{ documents : owns
+    documents ||--o{ document_versions : versions
+    tenders ||--o{ tender_documents : includes
+    document_versions ||--o{ tender_documents : attached_as
+    organizations ||--o{ company_profiles : owns
+    company_profiles ||--o{ company_profile_versions : versions
+    company_profile_versions ||--o{ company_evidence : supports
+    document_versions ||--o{ company_evidence : provides
+    document_versions ||--o{ chunks : parsed_into
+    tenders ||--o{ analysis_runs : analyzed_in
+    company_profile_versions ||--o{ analysis_runs : evaluated_in
+    memberships ||--o{ analysis_runs : requests
+    analysis_runs ||--o{ analysis_run_documents : selects
+    tender_documents ||--o{ analysis_run_documents : available_input
+    analysis_run_documents ||--o{ requirements : source_document
+    chunks ||--o{ requirements : source_chunk
+    requirements ||--o| findings : evaluated_as
+    analysis_runs ||--o{ findings : produces
+    company_evidence o|--o{ findings : supports
+    organizations ||--o{ processing_jobs : owns
+    analysis_runs o|--o{ processing_jobs : analysis_target
+    document_versions o|--o{ processing_jobs : ingestion_target
+```
 
 This ER view reflects the existing migration tables. Every tenant-owned reference
 retains `organization_id`; global users are linked to organizations by membership.
@@ -168,7 +296,60 @@ decision. Do not edit applied migrations to make this diagram appear implemented
 
 ## Processing and failure semantics
 
-![Processing sequence](export/analysis-flow.svg)
+<!-- diagram:analysis-flow -->
+
+```mermaid
+sequenceDiagram
+    actor Analyst
+    participant API as FastAPI
+    participant Store as PostgreSQL + FileStore
+    participant Worker as Durable worker
+    participant Retrieve as Authorized retrieval
+    participant Gateway as Inference Gateway
+    participant Model as Selected local / hosted runtime
+    Analyst->>API: Upload tender and company document versions
+    API->>API: Authenticate, authorize, validate file limits/type
+    API->>Store: Store private bytes and immutable metadata
+    API->>Store: Enqueue ingestion transactionally
+    Worker->>Store: Claim ingestion with lease / fencing token
+    Worker->>Worker: Stage 1: parse, locate, chunk
+    Worker->>Gateway: Classified embedding request
+    Gateway->>Gateway: Check approved local embedding route
+    Gateway->>Model: Permitted embedding request
+    Model-->>Gateway: Embeddings
+    Gateway-->>Worker: Validated embedding result
+    Worker->>Store: Publish authorized chunks/index state
+    Analyst->>API: Create run with exact profile and tender versions
+    API->>Store: Atomically select evidence, seal manifest, enqueue
+    API-->>Analyst: Accepted job reference
+    Worker->>Store: Claim analysis and load sealed manifest
+    Worker->>Retrieve: Retrieve only authorized selected inputs
+    Retrieve-->>Worker: Evidence with source locators
+    Note over Worker,Gateway: Stage 2 extract, stage 3 match, stage 4 report - every model call uses the gateway
+    loop Each required model call while execution remains active
+      Worker->>Gateway: Stage request + run scope + classified context
+      Gateway->>Gateway: Verify policy, minimize, select permitted route
+      alt No permitted route
+        Gateway-->>Worker: Policy-blocked result with no model request
+        Worker->>Store: Mark run blocked / job failed safely
+      else Permitted route
+        Gateway->>Model: Approved payload only
+        Model-->>Gateway: Untrusted structured output
+        Gateway-->>Worker: Validated envelope and safe audit reference
+        Worker->>Worker: Validate citations, schema and stage invariants
+      end
+    end
+    alt All required stages valid and current lease held
+      Worker->>Worker: Assemble complete validated report
+      Worker->>Store: Fenced transaction publishes complete findings
+    else Blocked, failed, cancelled or stale lease
+      Worker->>Store: Preserve explicit outcome without a completed report
+    end
+    Analyst->>API: Poll state and read completed report and citations
+    API->>Store: Recheck membership and authorize each referenced source
+    Store-->>API: Permitted result or explicit failed / blocked state
+    API-->>Analyst: Report with met / unmet / unknown, or processing outcome
+```
 
 Uploads and analysis are separate jobs. Analysis requires successfully ingested
 inputs, an exact profile version and an atomically sealed selection. Each stage
@@ -210,7 +391,38 @@ resource isolation.
 
 ## Deployment boundary
 
-![Deployment target](export/deployment.svg)
+<!-- diagram:deployment -->
+
+```mermaid
+flowchart LR
+    browser["Browser"]
+    subgraph host["Operator-controlled deployment — target, not deployed"]
+      caddy["Caddy<br/>only public HTTPS endpoint"]
+      web["Next.js<br/>no model credentials"]
+      subgraph private["Private application network / volumes"]
+        api["FastAPI<br/>restricted runtime identity"]
+        worker["Worker<br/>no direct Internet model access"]
+        db[("PostgreSQL<br/>non-owner runtime roles + RLS planned")]
+        files[("Private file volume<br/>not a static web directory")]
+        local["Local embedding runtime<br/>optional local generation"]
+      end
+      gateway["Inference Gateway<br/>private authenticated endpoint<br/>sole model egress identity"]
+      egress["Destination allowlist / egress controls<br/>redirect and retry policy"]
+      backup[("Restricted backups<br/>compatible database + file snapshot")]
+    end
+    provider["Approved hosted provider<br/>external trust boundary"]
+    browser -->|HTTPS| caddy
+    caddy --> web
+    caddy -->|API routes| api
+    api --> db & files
+    worker --> db & files
+    api & worker -->|Scoped internal model requests| gateway
+    gateway -->|Permitted local route| local
+    gateway -->|Scoped policy and membership reads| db
+    gateway --> egress
+    egress -->|Only authorized minimized context| provider
+    db & files -.-> backup
+```
 
 Caddy is the intended public entry point. PostgreSQL, workers, file storage,
 model runtimes and the internal gateway endpoint are private. The gateway has the
@@ -247,18 +459,21 @@ before all M0 outputs are finished; their final alignment is an integration step
 Run from the repository root with Python and Node.js/npm available:
 
 ```console
-python docs/architecture/render.py
+python docs/architecture/tools/render.py
 ```
 
 The renderer invokes Mermaid CLI pinned to `12.0.0` and may download its tooling
 and browser on first use. To use an existing CLI and Chrome installation:
 
 ```powershell
-python docs/architecture/render.py --mmdc "C:/path/to/mmdc.cmd" --browser "C:/Program Files/Google/Chrome/Application/chrome.exe"
+python docs/architecture/tools/render.py --mmdc "C:/path/to/mmdc.cmd" --browser "C:/Program Files/Google/Chrome/Application/chrome.exe"
 ```
 
-The first command needs network access for tooling installation, independently
-of the product's runtime network policy. Sources live in `src/`, SVGs in `export/`,
-and styling in `mermaid-config.json`. Edit sources and rerender; do not hand-edit
-exports. The existing-table ER source mirrors the database document and must be
-updated together when the authoritative schema changes.
+The renderer reads the six named Mermaid blocks in this document and rebuilds
+the SVGs in `export/`. Export tooling and styling are isolated in `tools/`;
+there is no second copy of the diagram sources to maintain. Edit the Mermaid
+blocks and rerender when an export is needed. Keep the ER block aligned with
+the database document when the authoritative schema changes.
+
+Initial tooling installation may need network access, independently of the
+product's runtime network policy. GitHub preview requires no local renderer.
