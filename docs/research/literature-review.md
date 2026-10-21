@@ -2,7 +2,7 @@
 
 TenderGuard uses evidence from tender documents and company records to assess requirements and explain compliance risks for SMEs. This review supports a controlled, testable analysis workflow: retrieve evidence, extract requirements, compare them with company evidence, and report supported findings with explicit uncertainty. The value of separating these stages must be measured against a simpler RAG baseline.
 
-Project team: Daniyar Kairatov, Rassul Akhmetov and Ramazan Talgatov. Prepared: 21 October 2026. Peer review: pending.
+Project team: Daniyar Kairatov, Rassul Akhmetov and Ramazan Talgatov. Peer review: pending.
 
 ## Scope and source selection
 

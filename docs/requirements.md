@@ -1,6 +1,6 @@
 # TenderGuard requirements and acceptance criteria
 
-**Version:** 1.0, 21 October 2026. **Task:** TG-R01. **Owner:** Rassul Akhmetov. **Reviewer:** Ramazan Talgatov, with Daniyar Kairatov reviewing ML criteria. **Status:** specification ready for review; implementation and approval are assessed separately.
+**Version:** 1.0. **Task:** TG-R01. **Owner:** Rassul Akhmetov. **Reviewer:** Ramazan Talgatov, with Daniyar Kairatov reviewing ML criteria. **Status:** specification ready for review; implementation and approval are assessed separately.
 
 These requirements implement the scope of the [project proposal](proposal.md). They describe the target core version rather than a completed product. Must requirements define the core release; Should requirements are extensions that do not block it. Numeric limits below are proposed engineering decisions, not university-mandated thresholds.
 

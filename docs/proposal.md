@@ -2,7 +2,7 @@
 
 TenderGuard is a proposed web platform that helps an SME check a tender against its own company profile and supporting documents. It will extract requirements, show whether the available evidence supports compliance, and explain missing information and risks with citations. The project will evaluate whether a controlled multi-agent RAG workflow improves this analysis compared with a simpler single-prompt RAG baseline, while enforcing access and data-transfer policies.
 
-**Version:** 1.0, 21 October 2026. **Task:** TG-R01, M0 first predefence. **Owner:** Rassul Akhmetov. **Reviewer:** Ramazan Talgatov. **Review status:** ready for team and supervisor review; approval has not been recorded.
+**Version:** 1.0. **Task:** TG-R01, M0 first predefence. **Owner:** Rassul Akhmetov. **Reviewer:** Ramazan Talgatov. **Review status:** ready for team and supervisor review; approval has not been recorded.
 
 ## Project identification
 
