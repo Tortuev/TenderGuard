@@ -64,45 +64,45 @@ This review currently contains eight scientific publications. Component 3 requir
 
 **Proposed decision.** Use human-adjudicated labels and citation checks as primary outcomes. Treat automatic judging as optional diagnostics, calibrated on permitted development data. Version its model and prompts and apply the same data-routing policy as generation. Related tasks: TG-D19 and TG-D21.
 
-##Additional articles on privacy, retrieval integrity and prompt-injection robustness
+## Additional articles on privacy, retrieval integrity and prompt-injection robustness
 
-##L15. RAG privacy leakage and private evidence protection
-**L15. Zeng et al. (2024), The Good and The Bad: Exploring Privacy Issues in Retrieval-Augmented Generation (RAG). Findings of the Association for Computational Linguistics: ACL 2024, pages 4505–4524. [Publisher record and paper](https://aclanthology.org/2024.findings-acl.267/). DOI: [10.18653/v1/2024.findings-acl.267](https://doi.org/10.18653/v1/2024.findings-acl.267).
+## L15. RAG privacy leakage and private evidence protection
+**L15. Zeng et al. (2024), The Good and The Bad: Exploring Privacy Issues in Retrieval-Augmented Generation (RAG). Findings of the Association for Computational Linguistics: ACL 2024, pages 4505–4524.** [Publisher record and paper](https://aclanthology.org/2024.findings-acl.267/). DOI: [10.18653/v1/2024.findings-acl.267](https://doi.org/10.18653/v1/2024.findings-acl.267).
 
-**Method and findings. The authors empirically examine privacy risks in RAG systems. Their experiments show that attacks can expose information from a private retrieval database. They also report that RAG can mitigate some training-data leakage risks, indicating that its privacy effects depend on the threat model and implementation.
+**Method and findings.** The authors empirically examine privacy risks in RAG systems. Their experiments show that attacks can expose information from a private retrieval database. They also report that RAG can mitigate some training-data leakage risks, indicating that its privacy effects depend on the threat model and implementation.
 
-**Transfer limitation. The results concern the evaluated systems and attack settings. They do not quantify leakage rates for TenderGuard or establish protection for multi-tenant procurement data.
+**Transfer limitation.** The results concern the evaluated systems and attack settings. They do not quantify leakage rates for TenderGuard or establish protection for multi-tenant procurement data.
 
-**Proposed decision. Enforce tenant authorization before retrieval and before retrieved content enters the model context. Test whether users can extract another organization's documents through direct questions, repeated queries or paraphrases. Evaluate privacy leakage separately from answer quality. Related tasks: TG-R13, TG-R19 and TG-D21.
+**Proposed decision.** Enforce tenant authorization before retrieval and before retrieved content enters the model context. Test whether users can extract another organization's documents through direct questions, repeated queries or paraphrases. Evaluate privacy leakage separately from answer quality. Related tasks: TG-R13, TG-R19 and TG-D21.
 
-##L16. Poisoning and manipulation of retrieved documents
-**L16. Tan et al. (2024), Glue pizza and eat rocks - Exploiting Vulnerabilities in Retrieval-Augmented Generative Models. Proceedings of EMNLP 2024, pages 1610–1626. [Publisher record and paper](https://aclanthology.org/2024.emnlp-main.96/). DOI: [10.18653/v1/2024.emnlp-main.96](https://doi.org/10.18653/v1/2024.emnlp-main.96).
+## L16. Poisoning and manipulation of retrieved documents
+**L16. Tan et al. (2024), Glue pizza and eat rocks - Exploiting Vulnerabilities in Retrieval-Augmented Generative Models. Proceedings of EMNLP 2024, pages 1610–1626.** [Publisher record and paper](https://aclanthology.org/2024.emnlp-main.96/). DOI: [10.18653/v1/2024.emnlp-main.96](https://doi.org/10.18653/v1/2024.emnlp-main.96).
 
-**Method and findings. The paper studies attacks in which deceptive content is inserted into a retrieval knowledge base to influence RAG model outputs. The authors report that crafted uploads can manipulate model behavior under the settings they evaluate, even when an attacker lacks access to the user's query, the knowledge base or model parameters.
+**Method and findings.** The paper studies attacks in which deceptive content is inserted into a retrieval knowledge base to influence RAG model outputs. The authors report that crafted uploads can manipulate model behavior under the settings they evaluate, even when an attacker lacks access to the user's query, the knowledge base or model parameters.
 
-**Transfer limitation. The experiments establish vulnerabilities in the studied settings; they do not measure the likelihood of malicious tender uploads or prove that any single defensive control is sufficient.
+**Transfer limitation.** The experiments establish vulnerabilities in the studied settings; they do not measure the likelihood of malicious tender uploads or prove that any single defensive control is sufficient.
 
-**Proposed decision. Treat tender and company files as untrusted evidence. Preserve document provenance, file hashes, uploader identity, version and source citations. Do not allow retrieved text to override system instructions or grant additional tool permissions. Test synthetic documents containing misleading or contradictory statements. Related tasks: TG-R13, TG-R19 and TG-D15.
+**Proposed decision.** Treat tender and company files as untrusted evidence. Preserve document provenance, file hashes, uploader identity, version and source citations. Do not allow retrieved text to override system instructions or grant additional tool permissions. Test synthetic documents containing misleading or contradictory statements. Related tasks: TG-R13, TG-R19 and TG-D15.
 
-##L17. Measuring instruction-following robustness to prompt injection
-**L17. Li, Z., Peng, B., He, P. and Yan, X. (2024), Evaluating the Instruction-Following Robustness of Large Language Models to Prompt Injection. Proceedings of EMNLP 2024, pages 557–568. [Publisher record and paper](https://aclanthology.org/2024.emnlp-main.33/). DOI: [10.18653/v1/2024.emnlp-main.33](https://doi.org/10.18653/v1/2024.emnlp-main.33).
+## L17. Measuring instruction-following robustness to prompt injection
+**L17. Li, Z., Peng, B., He, P. and Yan, X. (2024), Evaluating the Instruction-Following Robustness of Large Language Models to Prompt Injection. Proceedings of EMNLP 2024, pages 557–568.** [Publisher record and paper](https://aclanthology.org/2024.emnlp-main.33/). DOI: [10.18653/v1/2024.emnlp-main.33](https://doi.org/10.18653/v1/2024.emnlp-main.33).
 
-**Method and findings. The authors introduce a benchmark for testing whether instruction-following models distinguish legitimate instructions from malicious instructions embedded in inputs. Their experiments identify vulnerabilities in the evaluated models, including cases where injected instructions are followed.
+**Method and findings.** The authors introduce a benchmark for testing whether instruction-following models distinguish legitimate instructions from malicious instructions embedded in inputs. Their experiments identify vulnerabilities in the evaluated models, including cases where injected instructions are followed.
 
-**Transfer limitation. Benchmark results do not guarantee the same behavior on long tender PDFs, scanned documents, Russian/Kazakh text or TenderGuard's specific models and prompts. The study supports targeted testing rather than a claim that one defense fully solves prompt injection.
+**Transfer limitation.** Benchmark results do not guarantee the same behavior on long tender PDFs, scanned documents, Russian/Kazakh text or TenderGuard's specific models and prompts. The study supports targeted testing rather than a claim that one defense fully solves prompt injection.
 
-**Proposed decision. Build a controlled test set containing normal tender clauses and adversarial instructions embedded in document text. Score whether the system follows authorized instructions, preserves evidence and assigns the correct met, unmet or unknown status. Report results by language and document type. Related tasks: TG-R14, TG-R19 and TG-D21.
+**Proposed decision.** Build a controlled test set containing normal tender clauses and adversarial instructions embedded in document text. Score whether the system follows authorized instructions, preserves evidence and assigns the correct met, unmet or unknown status. Report results by language and document type. Related tasks: TG-R14, TG-R19 and TG-D21.
 
-##L18. Indirect prompt injection in tool-integrated agents
-**L18. Zhan, Q., Liang, Z., Ying, Z. and Kang, D. (2024), InjecAgent: Benchmarking Indirect Prompt Injections in Tool-Integrated Large Language Model Agents. Findings of the Association for Computational Linguistics: ACL 2024, pages 10471–10506. [Publisher record and paper](https://aclanthology.org/2024.findings-acl.624/).
+## L18. Indirect prompt injection in tool-integrated agents
+**L18. Zhan, Q., Liang, Z., Ying, Z. and Kang, D. (2024), InjecAgent: Benchmarking Indirect Prompt Injections in Tool-Integrated Large Language Model Agents. Findings of the Association for Computational Linguistics: ACL 2024, pages 10471–10506.** [Publisher record and paper](https://aclanthology.org/2024.findings-acl.624/).
 
-**Method and findings. InjecAgent evaluates indirect prompt-injection attacks against tool-integrated LLM agents. The authors evaluate 30 agents and report vulnerabilities in the tested systems, showing that tool use and a reasoning pattern alone do not guarantee resistance to malicious instructions.
+**Method and findings.** InjecAgent evaluates indirect prompt-injection attacks against tool-integrated LLM agents. The authors evaluate 30 agents and report vulnerabilities in the tested systems, showing that tool use and a reasoning pattern alone do not guarantee resistance to malicious instructions.
 
-**Transfer limitation. The benchmark tasks are not procurement-specific. Its reported results should not be interpreted as TenderGuard's expected attack rate; outcomes depend on the evaluated agents, tools, prompts and attack scenarios.
+**Transfer limitation.** The benchmark tasks are not procurement-specific. Its reported results should not be interpreted as TenderGuard's expected attack rate; outcomes depend on the evaluated agents, tools, prompts and attack scenarios.
 
-**Proposed decision. Apply least privilege to every agent stage. Keep tenant identity and permissions outside model-controlled text and require server-side authorization for document access and sensitive operations. Test whether malicious document content can trigger unauthorized tool calls, cross-tenant retrieval or unsupported compliance decisions. Related tasks: TG-R13, TG-D15 and TG-D21.
+**Proposed decision.** Apply least privilege to every agent stage. Keep tenant identity and permissions outside model-controlled text and require server-side authorization for document access and sensitive operations. Test whether malicious document content can trigger unauthorized tool calls, cross-tenant retrieval or unsupported compliance decisions. Related tasks: TG-R13, TG-D15 and TG-D21.
 
-##Synthesis of the four additional articles
+## Synthesis of the four additional articles
 
 Together, these studies show that RAG privacy and security require more than careful prompt wording. Private retrieval data can be exposed, deceptive documents can influence retrieved answers, models can follow injected instructions, and tool-integrated agents can be manipulated. For TenderGuard, these findings motivate server-enforced access control, treating uploaded and retrieved content as untrusted, constrained agent permissions, evidence provenance and repeatable adversarial tests.
 
