@@ -3,8 +3,7 @@ Privacy-preserving multi-agent RAG platform for automated tender document and co
 
 ## Documentation
 
-- [Literature review in Markdown](docs/research/literature-review.md)
-- [Literature review in Word](docs/research/TenderGuard_Literature_Review.docx)
+- [Literature review](docs/research/literature-review.md)
 
 The literature review contains four scientific source discussions, a synthesis and
 proposed design/evaluation decisions. It is ready for team review; approval remains pending.

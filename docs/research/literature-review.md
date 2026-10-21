@@ -111,4 +111,4 @@ Split by document family and related company-profile variants before tuning, and
 
 The review connects each publication's method, evaluation and limitations to a TenderGuard design decision. Team members confirm the interpretations for presentation; Ramazan coordinates peer review and records any requested corrections. Review approval and task statuses remain with the team.
 
-Maintain one literature review under Component 3, retaining unique publication identifiers when adding research. Transfer the proposed decisions into the requirements, architecture and evaluation documents after team review. The Word document is a presentation copy of this Markdown source; update both together when incorporating review comments.
+Maintain one literature review under Component 3, retaining unique publication identifiers when adding research. Transfer the proposed decisions into the requirements, architecture and evaluation documents after team review. Incorporate review comments directly into this document.
