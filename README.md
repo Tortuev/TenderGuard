@@ -122,8 +122,12 @@ before connecting any real company documents.
 ## Documentation
 
 - [Database foundation and ER diagram](docs/database.md)
+- [Project proposal](docs/proposal.md)
+- [Requirements and acceptance criteria](docs/requirements.md)
 - [Literature review](docs/research/literature-review.md)
 
+The proposal and requirements define the target scope for TG-R01, with priorities,
+acceptance criteria and unresolved decisions. Team and supervisor approval are pending.
 The literature review contains four scientific source discussions, a synthesis and
 proposed design/evaluation decisions. It is ready for team review; approval remains pending.
 The other predefence materials will be added under `docs/` as their tasks are completed.
@@ -133,19 +137,19 @@ Notion holds tasks, discussion and evidence links; reviewed repository versions
 provide the submission record. Each member commits their own work and obtains
 another member's review.
 
-## Planned predefence documents
+## Predefence documents
 
-These are planned destinations, not completed documents. Add working links as
-the materials become available.
+Linked documents are available for review. Paths shown as code are planned destinations;
+add working links as those materials become available.
 
-| Criterion | Material | Planned path |
+| Criterion | Material | Document or planned path |
 | --- | --- | --- |
-| 1 | Project proposal and scope | `docs/proposal.md` |
+| 1 | Project proposal and scope | [Proposal](docs/proposal.md) |
 | 2 | Relevance findings and permitted interview evidence | `docs/relevance.md` |
-| 3 | Literature review and separate regulatory analysis | `docs/research/literature-review.md`, `docs/research/regulatory-review.md` |
+| 3 | Literature review and separate regulatory analysis | [Literature review](docs/research/literature-review.md); `docs/research/regulatory-review.md` planned |
 | 4 | Existing systems comparison | `docs/comparisons/existing-systems.md` |
 | 5 | Technology comparisons and decisions | `docs/comparisons/technologies.md` |
-| 6 | Functional and non-functional requirements | `docs/requirements.md` |
+| 6 | Functional and non-functional requirements | [Requirements](docs/requirements.md) |
 | 7 | Architecture, editable diagrams and readable exports | `docs/architecture/` |
 | 8 | UX prototype link, screens and scenarios | `docs/ux/` |
 | 9 | Verification and evaluation protocol | `docs/evaluation-plan.md` |
