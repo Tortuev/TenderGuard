@@ -1,10 +1,10 @@
-# TenderGuard — Verification and Evaluation Plan
+# TenderGuard: Verification and Evaluation Plan
 
 ## 1. Evaluation purpose
 
 TenderGuard compares tender requirements with a company's documents and presents the findings with supporting quotations and source references. The evaluation will examine whether the platform retrieves the necessary evidence, interprets the requirements correctly and produces an assessment that a tender specialist can check. It will also test whether organization access and processing policies remain effective throughout that workflow.
 
-The main experimental question concerns the proposed staged RAG workflow. Separating requirement extraction, assessment and reporting may make errors easier to detect, but it also introduces additional model calls and opportunities to lose information between stages. A single-prompt RAG system provides the comparison needed to determine whether the additional structure is worthwhile.
+The central experiment compares staged analysis with a single-prompt RAG baseline. Separating requirement extraction, assessment and reporting may make errors easier to detect, but it also introduces additional model calls and opportunities to lose information between stages. A single-prompt RAG system provides the comparison needed to determine whether the additional structure is worthwhile.
 
 The evaluation follows the objectives in the project proposal. Documentary fit is assessed against the supplied evidence; legal applicability requires its own validated basis.
 
@@ -78,7 +78,7 @@ RQ1 will compare PostgreSQL lexical full-text search with BGE-M3 dense retrieval
 
 All configurations will use the same corpus versions, chunk boundaries, query set and organization filters. Tokenizer truncation will be checked for each embedding model. Query language and document language will be recorded separately, including cross-language cases. Annotators will identify relevant passages and acceptable complete evidence sets for each query. Queries with no supporting evidence in the corpus will be evaluated as a separate unanswerable group.
 
-Lexical–dense fusion will be tested as a retrieval ablation after its combination rule and parameters have been selected on development data. Its effect will be reported separately from the comparison of analysis workflows.
+Combining lexical and dense retrieval will be tested as a separate retrieval variant, with its combination rule and parameters selected on development data. Its effect will be reported separately from the comparison of analysis workflows.
 
 ### 4.2. Single-prompt and staged analysis
 
@@ -111,9 +111,9 @@ A second diagnostic will move the same decisive passage to the beginning, middle
 
 Passage Recall@5 and Recall@10 will measure how much annotated relevant evidence appears among the highest-ranked results. For each answerable query, recall is the number of relevant retrieved passages divided by the number of relevant reference passages. Scores will be averaged across queries and reported with their denominators.
 
-Complete-evidence success@5 and success@10 will measure the proportion of answerable queries for which the retrieved results contain at least one complete acceptable evidence set. This is necessary because retrieving a tender clause without the associated company evidence may be insufficient for an assessment.
+Complete-evidence success@5 and success@10 will measure the proportion of answerable queries for which the retrieved results contain at least one complete acceptable evidence set. A tender clause alone may not provide enough information for an assessment; the corresponding company evidence must also be retrieved.
 
-Where graded relevance annotations are available, nDCG@10 will measure ranking quality. Proposed relevance grades are 0 for irrelevant, 1 for partially relevant and 2 for directly relevant passages, using gain `2^grade − 1` and discount `log2(rank + 1)`. These definitions will be settled during annotation. Unanswerable queries will be reported separately rather than assigned a recall value with an empty denominator.
+Where graded relevance annotations are available, nDCG@10 will measure ranking quality. Proposed relevance grades are 0 for irrelevant, 1 for partially relevant and 2 for directly relevant passages, using gain `2^grade - 1` and discount `log2(rank + 1)`. These definitions will be settled during annotation. Unanswerable queries will be reported separately rather than assigned a recall value with an empty denominator.
 
 ### 5.2. Extraction and status assignment
 
@@ -127,7 +127,7 @@ Extraction precision, recall and F1 will be calculated as:
 
 The primary classification measure will be macro-F1 across `met`, `unmet` and `unknown` in the reference-requirement experiment. Per-class precision, recall and F1, class counts and the confusion matrix will accompany it. A prediction-only `processing_failure` column will retain invalid or missing answers; these count as false negatives for their reference classes. Undefined scored precision/recall/F1 values will be set to zero, with the underlying counts reported. If a reference class is absent, both the fixed three-class score and the score over represented classes will be shown.
 
-End-to-end requirement-and-status F1 will count a true positive only when both the obligation and its status are correct. A matched obligation with a wrong status contributes one false positive and one false negative. This prevents high classification scores from concealing missed requirements.
+End-to-end requirement-and-status F1 will count a true positive only when both the obligation and its status are correct. A matched obligation with a wrong status contributes one false positive and one false negative. Missed requirements therefore reduce the end-to-end score, even when the remaining classifications are accurate.
 
 False passes will receive separate attention. The false-pass rate is the number of reference `unmet` or `unknown` cases predicted as `met`, divided by all reference `unmet` and `unknown` cases. The report will also show the erroneous-pass share among predicted `met` findings and recall for `unknown` cases.
 
@@ -135,7 +135,7 @@ Any reported risk category will be checked against a written rubric and human re
 
 ### 5.3. Citations and cited answers
 
-Citation evaluation will distinguish a reference that opens correctly from evidence that supports the associated claim. This distinction follows the evaluation approach in [Gao et al. (2023)](https://aclanthology.org/2023.emnlp-main.398/).
+Citation evaluation will check both whether a reference opens at the correct source location and whether the cited text supports the finding, following the evaluation approach in [Gao et al. (2023)](https://aclanthology.org/2023.emnlp-main.398/).
 
 | Measure | Scoring unit and denominator |
 | --- | --- |
@@ -159,7 +159,7 @@ Each test case will identify the functional or non-functional requirement it ver
 | Test level | TenderGuard behavior to verify | Expected evidence |
 | --- | --- | --- |
 | Unit | File validation; paragraph/table extraction; source-locator mapping; numeric operators; unit and date handling; label rules; schema validation; policy decisions | Repeatable fixtures with expected values and explicit error outcomes |
-| Integration | Upload → parsed text → chunks → retrieval; profile version → assessment; stage handoffs → persisted findings; citations → original source; Privacy Gateway → provider adapter | Tests showing that document versions, organization context and evidence references remain consistent across boundaries |
+| Integration | Processing uploaded files through parsing, chunking and retrieval; using the selected profile version in assessment; saving outputs passed between stages; resolving citations to original documents; applying the Privacy Gateway before provider calls | Tests showing that document versions, organization context and evidence references remain consistent across boundaries |
 | End-to-end | Sign in, select an organization, upload documents, select a profile, run analysis, inspect findings and record a review; rerun with revised evidence | A repeatable scenario demonstrating the core workflow and preserved previous run history |
 | Security | Unauthorized API/database/file access; cross-tenant jobs, search and caches; forged identifiers; indirect prompt injection; prohibited external routes | Allowed/denied test records, controlled outbound observations and an incident record for any disclosure |
 | Recovery | Invalid files, unsupported scans, provider failure, timeout and worker interruption | Safe failure states, bounded retries and recovery without mixing tenants or replacing the original run record |
@@ -189,7 +189,7 @@ Paired differences will be reported because both configurations process the same
 
 Every run will retain its configuration, document/profile versions, evidence-set hash, original predictions, citations, validation outcomes, timing and model-use records. Private source text will stay in controlled storage. The evaluation export will contain enough permitted information to reproduce scoring and trace a reported finding to the assessed input.
 
-Paid experiments will use the remaining allocation within the team's stated $0–50 project budget. Expected token use and charges will be estimated before the final run, and a maximum run budget enforced. The exact generator, resource ceilings and final corpus allocation will be settled from the development pilot and recorded before the held-out test is accessed.
+Paid experiments will use the remaining allocation within the team's stated project budget of $0 to $50. Expected token use and charges will be estimated before the final run, and a maximum run budget enforced. The exact generator, resource ceilings and final corpus allocation will be settled from the development pilot and recorded before the held-out test is accessed.
 
 ## 9. Success criteria and interpretation
 
@@ -199,4 +199,4 @@ All defined unauthorized-access and prohibited-transfer cases are expected to be
 
 The final analysis will explain where errors originate: parsing, evidence retrieval, requirement extraction, numeric/calendar interpretation, status assignment, citation support or inter-stage reporting. Quality gains will be considered together with their resource cost. Higher precision accompanied by lower supported coverage will be reported as a trade-off, and similar quality at lower cost may favor the simpler baseline.
 
-The evaluation will support conclusions within the selected tender category, languages, document types and evidence conditions. Performance on synthetic company profiles, limited Kazakh samples or a small participant group will not be generalized to all procurement settings. Negative and inconclusive findings will remain part of the results and will inform the final system design.
+Conclusions will be limited to the selected tender category, languages, document types and evidence conditions. Performance on synthetic company profiles, limited Kazakh samples or a small participant group will not be generalized to all procurement settings. Negative and inconclusive findings will remain part of the results and will inform the final system design.
