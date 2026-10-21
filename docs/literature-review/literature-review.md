@@ -6,9 +6,9 @@ Project team: Daniyar Kairatov, Rassul Akhmetov and Ramazan Talgatov.
 
 ## Scope and source selection
 
-The eight sources address tool-using agents, coordination failures, legal reasoning and evaluation of grounded answers. Selection is thematic rather than a systematic search of all research. The published editions date from 2023–2025 and fall within the rubric's recent-source window.
+The twelve sources address tool-using agents, coordination failures, legal reasoning, evaluation of grounded answers, RAG privacy and security, multilingual retrieval, evidence-support checks, citation quality and long-context evidence use. Selection is thematic rather than a systematic search of all research. The published editions date from 2023–2025 and fall within the rubric's recent-source window.
 
-Publication status is supported by the conference header in the ReAct paper and the publisher records for MAST, LegalBench and RAGAs. The source locations below identify the methods and results used in each discussion. The records retain the shared review's identifiers L07, L14, L08, L04, L15, L16, L17 and L18 so they can be integrated without counting the same publication twice.
+Publication status is supported by the conference header in the ReAct paper and the publisher records for MAST, LegalBench and RAGAs. The source locations below identify the methods and results used in each discussion. The records retain the shared review's identifiers L07, L14, L08, L04, L15, L16, L17, L18, L19, L20, L21 and L22 so they can be integrated without counting the same publication twice.
 
 | Record | Publication | Research focus | TenderGuard design question |
 | --- | --- | --- | --- |
@@ -20,9 +20,13 @@ Publication status is supported by the conference header in the ReAct paper and 
 | L16	| EMNLP 2024	| RAG knowledge-base poisoning	| How should uploaded documents be treated as untrusted? |
 | L17	| EMNLP 2024	| Prompt-injection robustness	| How can malicious document instructions be tested? |
 | L18	| ACL Findings 2024	| Indirect prompt injection in agents	| How should agent tools and sensitive actions be restricted? |
+| L19 | M3-Embedding, Findings of ACL 2024 | Multilingual evidence retrieval | Which retrieval quality/resource trade-offs justify the embedding configuration? |
+| L20 | Self-RAG, ICLR 2024 | Retrieval and evidence-support critique | How should unsupported findings be detected without assuming self-judgments are correct? |
+| L21 | ALCE, EMNLP 2023 | Citation precision and support coverage | Do the cited tender/company passages support the reported finding? |
+| L22 | Lost in the Middle, TACL 2024 | Evidence position in long contexts | Does moving the same decisive clause change the assessment? |
 
 
-This review currently contains eight scientific publications. Component 3 requires at least 12 meaningfully used sources, including at least 8 scientific publications; further literature can be integrated into this same document. Applicable legislation belongs in a separate regulatory review; a legal-reasoning benchmark is not a normative legal source.
+This review contains twelve scientific publications, including four ML and retrieval records contributed under TG-D02 (L19–L22). Component 3 requires at least 12 meaningfully used sources, including at least 8 scientific publications; source counting does not by itself establish substantive review or acceptance. Applicable legislation belongs in a separate regulatory review; a legal-reasoning benchmark is not a normative legal source.
 
 ## ReAct and controlled tool use
 
@@ -109,9 +113,51 @@ Together, these studies show that RAG privacy and security require more than car
 These studies do not establish TenderGuard's own attack rates or prove that the proposed controls are effective. Those outcomes must be evaluated using TenderGuard's models, data and Russian/Kazakh document workflows.
 
 
+## Multilingual evidence retrieval with BGE-M3
+
+**L19. Chen, J., Xiao, S., Zhang, P., Luo, K., Lian, D. and Liu, Z. (2024), M3-Embedding: Multi-Linguality, Multi-Functionality, Multi-Granularity Text Embeddings Through Self-Knowledge Distillation. Findings of ACL 2024, pages 2318–2335.** [Publisher record](https://aclanthology.org/2024.findings-acl.137/). [Published paper](https://aclanthology.org/2024.findings-acl.137.pdf). DOI: [10.18653/v1/2024.findings-acl.137](https://doi.org/10.18653/v1/2024.findings-acl.137). Evidence: Sections 3–4; Table 5 and limitations, printed page 2326.
+
+**Method and evaluation.** BGE-M3 jointly learns dense, sparse and multi-vector retrieval using self-knowledge distillation. Evaluation covers MIRACL, MKQA and multilingual long-document retrieval. Table 5 reports MIRACL development nDCG@10 of 69.2 with distillation versus 68.7 without it in dense mode. This is a controlled ablation, not evidence of a large universal advantage. The model supports inputs up to 8,192 tokens, which concerns the retriever rather than the downstream generator.
+
+**Transfer limitation.** General multilingual benchmarks do not establish Kazakh tender performance or complete retrieval of numeric conditions. The paper acknowledges domain-transfer and resource limits; more retrieval modes add storage and scoring complexity.
+
+**Proposed decision.** Test BGE-M3 dense against a lexical baseline and the proposed E5 comparator on identical chunks and queries. Report Russian/Kazakh evidence recall, latency and index size. Add hybrid retrieval only after development results justify it. Similarity selects candidates; explicit threshold and unit checks determine documentary fit. Related tasks: TG-D01, TG-D04 and TG-D18.
+
+## Self-RAG and explicit evidence-support checks
+
+**L20. Asai, A., Wu, Z., Wang, Y., Sil, A. and Hajishirzi, H. (2024), Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection. ICLR 2024.** [Conference record](https://proceedings.iclr.cc/paper_files/paper/2024/hash/25f7be9694d7b32d5cc670927b8091e1-Abstract-Conference.html). [Published paper](https://proceedings.iclr.cc/paper_files/paper/2024/file/25f7be9694d7b32d5cc670927b8091e1-Paper-Conference.pdf). Evidence: Section 3, Table 2 on page 8, and Section 5.2.
+
+**Method and evaluation.** Self-RAG trains a generator to predict retrieval and critique tokens for relevance, evidential support and usefulness. Its six-task evaluation includes PopQA, fact verification and ASQA. On ASQA, Self-RAG-13B reports citation precision/recall of 70.3/71.3, versus 65.1/76.6 for retrieval-augmented ChatGPT in Table 2: higher precision accompanies lower recall. The result illustrates a trade-off rather than improvement on every outcome.
+
+**Transfer limitation.** This is a trained retrieval/generation framework, not merely an extra prompt or a multi-agent architecture. Its self-assessments are not independent ground truth. The experiments do not validate Russian/Kazakh procurement decisions or privacy enforcement.
+
+**Proposed decision.** Give the assessment stage an explicit claim–evidence support check and record unsupported conclusions for review. Measure false passes and supported coverage to expose omissions. Treat this as a design implication, not a Self-RAG reproduction; keep fine-tuning optional. Additional retrieval remains a separate variant from the frozen-pack B1/B2 comparison. Related tasks: TG-D01, TG-D13 and TG-D15.
+
+## ALCE and the quality of generated citations
+
+**L21. Gao, T., Yen, H., Yu, J. and Chen, D. (2023), Enabling Large Language Models to Generate Text with Citations. Proceedings of EMNLP 2023, pages 6465–6488.** [Publisher record](https://aclanthology.org/2023.emnlp-main.398/). [Published paper](https://aclanthology.org/2023.emnlp-main.398.pdf). DOI: [10.18653/v1/2023.emnlp-main.398](https://doi.org/10.18653/v1/2023.emnlp-main.398). Evidence: Section 3.3; Section 5.1; human evaluation and Table 9 in Section 6.
+
+**Method and evaluation.** ALCE evaluates retrieval-and-generation systems on ASQA, QAMPARI and ELI5, separating correctness from citation recall and precision. Entailment-based checks are compared with human judgments. In Table 9, human ELI5 citation recall for ChatGPT rises from 50.8 with vanilla generation to 59.7 with reranking. The study also finds that attaching citations after closed-book generation can leave correct-looking answers poorly supported.
+
+**Transfer limitation.** These benchmarks are not procurement assessments. An automated entailment check can miss a unit mismatch or a changed deadline. Reranking consumes additional generations; judging outputs with the same score used to select them can introduce selection bias.
+
+**Proposed decision.** Evaluate each atomic finding against its cited tender and company passages, distinguishing valid locations, supporting citations and complete support. Include missing citations and missed gold requirements in coverage reporting. Calibrate optional automated checks against human labels. This complements RAGAs (L04) by focusing on explicit citation support, rather than treating one aggregate RAG score as sufficient. Related tasks: TG-D01, TG-D15 and TG-D21.
+
+## Evidence position and long-context reliability
+
+**L22. Liu, N. F., Lin, K., Hewitt, J., Paranjape, A., Bevilacqua, M., Petroni, F. and Liang, P. (2024), Lost in the Middle: How Language Models Use Long Contexts. Transactions of the Association for Computational Linguistics, volume 12, pages 157–173.** [Publisher record](https://aclanthology.org/2024.tacl-1.9/). [Published paper](https://aclanthology.org/2024.tacl-1.9.pdf). DOI: [10.1162/tacl_a_00638](https://doi.org/10.1162/tacl_a_00638). Evidence: Sections 2.1–2.3 and 3; Figure 5.
+
+**Method and evaluation.** The study varies evidence position and context length in multi-document QA and synthetic key-value retrieval. Its QA construction uses 2,655 NaturalQuestions-Open queries with an answer-bearing passage and distractors. Several tested models show a U-shaped pattern: evidence near the beginning or end is used more reliably than evidence in the middle. Additional context can therefore fail to improve performance.
+
+**Transfer limitation.** Short Wikipedia passages and key-value pairs do not reproduce procurement tables, amendments or multi-source conditions. Position sensitivity must be retested for the selected model; the paper does not prove that every later long-context model behaves identically.
+
+**Proposed decision.** Run a development diagnostic that places the same decisive clause at the beginning, middle and end of an otherwise fixed evidence pack. Measure status and citation-support changes. Then freeze ordering and truncation for the main B1/B2 comparison. Record exclusions when input limits prevent full evidence access; do not silently drop clauses. Related tasks: TG-D01, TG-D07 and TG-D15.
+
 ## Synthesis and proposed TenderGuard method
 
-The proposed method combines controlled stages with explicit evidence contracts. The research contribution to test is whether that structure improves a specific SME document-analysis workflow enough to justify its cost. The four studies inform the design questions above; they do not establish TenderGuard's eventual quality or the uniqueness of its feature set.
+The proposed method combines controlled stages with explicit evidence contracts. The research contribution to test is whether that structure improves a specific SME document-analysis workflow enough to justify its cost. The reviewed studies inform the design questions above; they do not establish TenderGuard's eventual quality or the uniqueness of its feature set.
+
+The ML records address four distinct decisions: benchmark multilingual evidence retrieval and its resource cost (L19); test whether an explicit support check reduces unsupported findings without hiding omissions (L20); measure citation support separately from answer correctness (L21); and control the position and truncation of evidence (L22). For TenderGuard, the proposed method is therefore retrieval followed by typed assessment and evidence-linked reporting, with each potential benefit measured against B1. The cited papers do not establish that this staged workflow will outperform the simpler baseline on Russian/Kazakh procurement data.
 
 ### Shared ingestion and stage contracts
 
@@ -160,80 +206,13 @@ Split by document family and related company-profile variants before tuning, and
 6.	Tan, Z., Zhao, C., Moraffah, R., Li, Y., Wang, S., Li, J., Chen, T., and Liu, H. 2024. *Glue pizza and eat rocks - Exploiting Vulnerabilities in Retrieval-Augmented Generative Models.* Proceedings of EMNLP 2024, 1610–1626. DOI: [10.18653/v1/2024.emnlp-main.96](https://doi.org/10.18653/v1/2024.emnlp-main.96).
 7.	Li, Z., Peng, B., He, P., and Yan, X. 2024. *Evaluating the Instruction-Following Robustness of Large Language Models to Prompt Injection.* Proceedings of EMNLP 2024, 557–568. DOI: [10.18653/v1/2024.emnlp-main.33](https://doi.org/10.18653/v1/2024.emnlp-main.33).
 8.	Zhan, Q., Liang, Z., Ying, Z., and Kang, D. 2024. *InjecAgent: Benchmarking Indirect Prompt Injections in Tool-Integrated Large Language Model Agents.* Findings of ACL 2024, 10471–10506. [Publisher record](https://aclanthology.org/2024.findings-acl.624/).
-
+9. Chen, J., Xiao, S., Zhang, P., Luo, K., Lian, D., and Liu, Z. 2024. *M3-Embedding: Multi-Linguality, Multi-Functionality, Multi-Granularity Text Embeddings Through Self-Knowledge Distillation.* Findings of ACL 2024, 2318–2335. DOI: [10.18653/v1/2024.findings-acl.137](https://doi.org/10.18653/v1/2024.findings-acl.137).
+10. Asai, A., Wu, Z., Wang, Y., Sil, A., and Hajishirzi, H. 2024. *Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection.* ICLR 2024. [Conference record and paper](https://proceedings.iclr.cc/paper_files/paper/2024/hash/25f7be9694d7b32d5cc670927b8091e1-Abstract-Conference.html).
+11. Gao, T., Yen, H., Yu, J., and Chen, D. 2023. *Enabling Large Language Models to Generate Text with Citations.* Proceedings of EMNLP 2023, 6465–6488. DOI: [10.18653/v1/2023.emnlp-main.398](https://doi.org/10.18653/v1/2023.emnlp-main.398).
+12. Liu, N. F., Lin, K., Hewitt, J., Paranjape, A., Bevilacqua, M., Petroni, F., and Liang, P. 2024. *Lost in the Middle: How Language Models Use Long Contexts.* Transactions of the Association for Computational Linguistics, 12, 157–173. DOI: [10.1162/tacl_a_00638](https://doi.org/10.1162/tacl_a_00638).
 
 ## Review and integration
 
 The review connects each publication's method, evaluation and limitations to a TenderGuard design decision. Team members confirm the interpretations for presentation; Ramazan coordinates peer review and records any requested corrections. Review approval and task statuses remain with the team.
 
 Maintain one literature review under Component 3, retaining unique publication identifiers when adding research. Transfer the proposed decisions into the requirements, architecture and evaluation documents after team review. Incorporate review comments directly into this document.
-
-## Additional ML and retrieval articles — TG-D02
-
-**Contributor:** Daniyar Kairatov. **Reviewer:** Rassul Akhmetov; review pending.
-
-The eight-source review above is supplemented by the following four scientific publications, identified as L19–L22. The combined document therefore contains **12 unique scientific publications: eight existing sources and four sources contributed under TG-D02**. These additions address domain adaptation, Kazakh question answering, dataset integrity and the use of long evidence contexts. Published results below belong to the cited studies; no TenderGuard model experiment is claimed.
-
-## L19. Domain adaptation: retrieval versus fine-tuning
-
-**Method and data.** Tugambayeva and Sakhipov compare FAISS retrieval with Mistral-7B over 238 aviation documents against T5-small adapted with LoRA using 920 context–question pairs. Automatic evaluation uses 116 examples; preliminary expert assessment uses 15 questions per approach.
-
-**Findings.** Table 1 reports BLEU of 24.77% for fine-tuned T5 and 3.02% for RAG, while aviation-term coverage is 43.97% and 92.24%, respectively. The disagreement shows that reference similarity and domain terminology measure different properties.
-
-**Critical assessment.** Model architecture, capacity and training change together: approximately 60 million versus seven billion parameters. The comparison cannot isolate the effect of retrieval. The small author-led expert assessment also limits generalization. Question generation differs from eligibility assessment.
-
-**TenderGuard implication.** Begin with an evidence-retrieval baseline and justify any later fine-tuning through error analysis. Prioritize correct statuses and supporting citations over BLEU. Keep the generator and evidence fixed when comparing analysis workflows.
-
-**Evidence locations:** Methods and evaluation, pp. 156–159; Table 1, p. 159; expert assessment, p. 160; discussion, pp. 160–162.
-
-## L20. Multilingual adaptation for Kazakh QA
-
-**Method and data.** Tleubayeva and Shomanov examine multilingual question-answering models, adaptation and augmentation for Kazakh, including Kazakh sKQuAD evaluation. Their results section combines analysis with findings from another study; it should not be described as a wholly reproduced, controlled benchmark.
-
-**Findings.** Table 3 reports mT5 F1 of 75.7213 after fine-tuning. However, mDeBERTa-v3-base-SQuAD2 is listed at 80.6928 before and 79.7787 after fine-tuning. The abstract's claim that mT5 has the highest F1 therefore does not describe the entire table consistently.
-
-**Critical assessment.** Model conditions and result provenance require careful separation. QA token-overlap scores do not demonstrate correct tender citations or numeric reasoning. Translation and augmentation can also introduce related examples across data partitions.
-
-**TenderGuard implication.** Evaluate Russian and Kazakh separately, retaining sample counts, checkpoint identifiers and data versions. Use human-reviewed numeric and calendar cases. Treat multilingual capability as a hypothesis to test, rather than selecting a model from the abstract's ranking.
-
-**Evidence locations:** Methods, pp. 91–93; results and Table 3, pp. 93–95; discussion, pp. 95–96.
-
-## L21. Near-duplicate detection and dataset integrity
-
-**Method and data.** Kazagasheva and colleagues combine text canonicalization, lexical filtering, semantic embeddings and approximate-neighbor retrieval to reduce candidate comparisons. Their Kazakh academic-abstract dataset includes 11,851 pairs with authentic texts and controlled synthetic transformations.
-
-**Findings.** The study reports computational savings relative to exhaustive comparison and a trade-off between candidate filtering and duplicate recall. Figures 12–13 present performance information. No exact speedup is adopted here without a clearly reproducible numeric comparison.
-
-**Critical assessment.** Academic abstracts and synthetic paraphrases differ from tender amendments. Pair-level stratification alone does not establish independence between source families. Aggressive normalization can erase meaningful changes in amounts, deadlines or negation.
-
-**TenderGuard implication.** Group original tenders, amendments, translations and derived examples before splitting development and test data. Use hashes and similarity candidates followed by review. Similarity may identify related documents, but it must not establish equivalence between obligations.
-
-**Evidence locations:** Data, pp. 247–250; methodology, pp. 251–256; results and limitations, pp. 257–258. The publisher/PDF author order is used; a differing DOI-registration order was observed during preparation.
-
-## L22. Evidence position in long contexts
-
-**Method and data.** Liu and colleagues vary the position of relevant information in multi-document question answering and synthetic key-value retrieval. The QA experiments use Natural Questions-derived examples with distractor documents.
-
-**Findings.** Several tested models perform best when evidence appears near the beginning or end of the context and worse when it appears in the middle. A larger advertised context window does not ensure effective use of all included evidence.
-
-**Critical assessment.** The controlled tasks do not estimate procurement accuracy or the behavior of every later model. The findings motivate context-construction tests; they do not prove that chunking or a multi-agent system resolves the problem.
-
-**TenderGuard implication.** Version evidence ordering and truncation. Include long-document and distractor cases in development evaluation. Keep evidence content and order identical in the primary single-prompt versus staged comparison so context changes cannot explain an apparent staging benefit.
-
-**Evidence locations:** Sections 2–3, especially Section 2.3; published article, pp. 157–173.
-
-## Synthesis of the four ML articles
-
-The four studies complement the agent, privacy and evaluation findings above. Domain-reference similarity can disagree with domain usefulness (L19), Kazakh model rankings depend on evaluation conditions (L20), related documents require careful grouping (L21), and long context does not guarantee reliable use of evidence (L22).
-
-For TenderGuard, these findings support evidence-based status and citation checks, separate Russian/Kazakh evaluation, document-family splitting, preservation of numeric and calendar constraints, and a fixed evidence pack for the B1/B2 comparison. TG-D01 specifies the evaluation conditions, TG-D03 develops the corpus and annotation rules, and TG-D04 justifies candidate technologies. These are proposed design choices to evaluate, not measured improvements or guarantees.
-
-## Additional references (9–12)
-
-9. Tugambayeva, A., & Sakhipov, A. (2026). AI-based question generation for aviation training: Comparing retrieval-augmented generation and fine-tuned models. *Scientific Journal of Astana IT University, 25*. https://doi.org/10.37943/25VYNZ9998. [Publisher record](https://journal.astanait.edu.kz/index.php/ojs/article/view/967).
-
-10. Tleubayeva, A., & Shomanov, A. (2024). Comparative analysis of multilingual QA models and their adaptation to the Kazakh language. *Scientific Journal of Astana IT University, 19*, 89–97. https://doi.org/10.37943/19WHRK2878. [Publisher record](https://journal.astanait.edu.kz/index.php/ojs/article/view/626).
-
-11. Kazagasheva, V., Kuchanskyi, O., Biloshchytska, S., & Kantayeva, D. (2026). Scalable near-duplicate detection in Kazakh scientific texts via semantic embeddings and optimized candidate filtering. *Scientific Journal of Astana IT University, 25*. https://doi.org/10.37943/25NVVS5297. [Publisher record](https://journal.astanait.edu.kz/index.php/ojs/article/view/1029).
-
-12. Liu, N. F., Lin, K., Hewitt, J., Paranjape, A., Bevilacqua, M., Petroni, F., & Liang, P. (2024). Lost in the middle: How language models use long contexts. *Transactions of the Association for Computational Linguistics, 12*, 157–173. https://doi.org/10.1162/tacl_a_00638. [Primary publication and full text](https://aclanthology.org/2024.tacl-1.9/).
