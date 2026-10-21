@@ -125,6 +125,7 @@ before connecting any real company documents.
 - [Project proposal](docs/proposal.md)
 - [Requirements and acceptance criteria](docs/requirements.md)
 - [Literature review](docs/research/literature-review.md)
+- [Existing systems comparison: CIS platforms](docs/comparisons/existing-systems.md)
 
 The proposal and requirements define the target scope for TG-R01, with priorities,
 acceptance criteria and unresolved decisions. Team and supervisor approval are pending.
@@ -147,7 +148,7 @@ add working links as those materials become available.
 | 1 | Project proposal and scope | [Proposal](docs/proposal.md) |
 | 2 | Relevance findings and permitted interview evidence | `docs/relevance.md` |
 | 3 | Literature review and separate regulatory analysis | [Literature review](docs/research/literature-review.md); `docs/research/regulatory-review.md` planned |
-| 4 | Existing systems comparison | `docs/comparisons/existing-systems.md` |
+| 4 | Existing systems comparison | [Five CIS systems, ten criteria and observation evidence](docs/comparisons/existing-systems.md) |
 | 5 | Technology comparisons and decisions | `docs/comparisons/technologies.md` |
 | 6 | Functional and non-functional requirements | [Requirements](docs/requirements.md) |
 | 7 | Architecture, editable diagrams and readable exports | `docs/architecture/` |
