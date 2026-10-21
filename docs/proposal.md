@@ -2,8 +2,6 @@
 
 TenderGuard is a proposed web platform that helps an SME check a tender against its own company profile and supporting documents. It will extract requirements, show whether the available evidence supports compliance, and explain missing information and risks with citations. The project will evaluate whether a controlled multi-agent RAG workflow improves this analysis compared with a simpler single-prompt RAG baseline, while enforcing access and data-transfer policies.
 
-**Version:** 1.0, 21 October 2026. **Task:** TG-R01, M0 first predefence. **Owner:** Rassul Akhmetov. **Reviewer:** Ramazan Talgatov. **Review status:** ready for team and supervisor review; approval has not been recorded.
-
 ## Project identification
 
 | Field | Proposal |
@@ -145,9 +143,3 @@ Subsequent delivery proceeds through foundation, a first end-to-end workflow, co
 | RU/KK extraction or evidence matching is weak | A plausible report may contain unsupported findings | Daniyar measures components separately; Rassul preserves unknowns and prevents invalid outputs becoming completed reports |
 | Privacy controls or provider policy are incomplete | Restricted content may be disclosed | Ramazan blocks prohibited routes and completes isolation/egress tests before private use |
 | Agents, OCR or training exceed the available time or hardware | Optional work displaces the core system | All members prioritize the core workflow; decide extensions only after a runnable baseline and resource check |
-
-## Review and acceptance
-
-The TG-R01 document deliverables are this proposal and [requirements v1](requirements.md). They record the title, team, supervisor field, users, aim, objectives, expected outcomes, pilot candidate, exclusions, company-profile scope, priorities and acceptance criteria. Unconfirmed details are listed above.
-
-To accept the task, Ramazan reviews scope and requirements, Daniyar checks the research and ML commitments, and the team records user findings and supervisor feedback. Actual agreement is a human review step; this document does not record that approval as already obtained. Task statuses remain under the project manager's control in Notion.
