@@ -1,8 +1,7 @@
 # Existing-system observation log
 
 This log supports the [comparison matrix](../existing-systems.md).
-Checks used public pages without an authenticated account. The observation date
-for T01–T03 and the announcement capture is **2026-10-21**.
+Checks used public pages without an authenticated account.
 
 ## Shared discovery scenario
 

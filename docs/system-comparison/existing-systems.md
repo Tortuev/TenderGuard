@@ -31,7 +31,7 @@ commercial aggregator's entire database.
 The review combines official product pages and documentation with two interactive
 public-browser checks using the same Russian procurement query. The
 [observation log and screenshots](evidence/checks.md) record
-the actions, outcomes and access boundaries. Source access dates appear in the
+the actions, outcomes and access boundaries. Source references appear in the
 [source register](#source-register).
 
 Evidence labels used throughout the matrix:
@@ -146,22 +146,22 @@ belongs in the separate interview/relevance deliverable.
 
 ## Source register
 
-Pages can change; source IDs and access dates make the evidence traceable.
+Source IDs connect the comparison claims to their supporting evidence.
 
-| ID | Primary source | Accessed | Relevant evidence and qualification |
-| --- | --- | --- | --- |
-| S01 | [Tenderbot product and public search](https://tenderbot.kz/) | 2026-10-21 | Kazakhstan scope, monitoring and trial invitation; browser observation T01. |
-| S02 | [Tenderbot API](https://tenderbot.kz/pages/api) | 2026-10-21 | Procurement feed and integration contract; vendor documentation, no API execution. |
-| S03 | [Tenderplan search](https://tenderplan.ru/search) | 2026-10-21 | Regional scope, attachment search, filters and document viewing. |
-| S04 | [Tenderplan product](https://tenderplan.ru/) | 2026-10-21 | Team workflow and history descriptions; landing-page examples are not account observations. |
-| S05 | [Tenderplan API documentation](https://tenderplan.ru/api/doc/) | 2026-10-21 | JavaScript-rendered Swagger documentation checked in browser, T03. |
-| S06 | [Kontur.Zakupki AI announcement](https://zakupki.kontur.ru/site/new-features/ai) | 2026-10-21 | Separates available search from announced advanced functions; [page capture](evidence/S06-kontur-announcement.png). |
-| S07 | [Kontur.Zakupki features](https://zakupki.kontur.ru/site/features) | 2026-10-21 | Discovery, analytics, notifications and team workflow. |
-| S08 | [BiCoTender product description](https://www.bicotender.ru/about.html) | 2026-10-21 | Coverage, analytics and preanalysis claims; a later automated refetch returned HTTP 403. |
-| S09 | [BiCoTender search plans](https://www.bicotender.ru/tariffs-search.html) | 2026-10-21 | Plan-dependent preanalysis, TRM, collaboration and Excel export; advertised speed not independently timed. |
-| S10 | [BiCoTender integration announcement](https://www.bicotender.ru/news/novoye_resheniye.html) | 2026-10-21 | Historical API/CRM announcement published 30 September 2020; current availability not verified; later refetch returned HTTP 403. |
-| S11 | [UZEX eTender portal](https://etender.uzex.uz/) and [guides](https://etender.uzex.uz/docs) | 2026-10-21 | Public procurement interface and linked participation guidance; T02. |
-| S12 | [UZEX supplier instruction](https://etender.uzex.uz/assets/file/e-tender-instruction-for-provider.pdf) | 2026-10-21 | Official participation instructions; does not establish SME document-analysis functions. |
+| ID | Primary source | Relevant evidence and qualification |
+| --- | --- | --- |
+| S01 | [Tenderbot product and public search](https://tenderbot.kz/) | Kazakhstan scope, monitoring and trial invitation; browser observation T01. |
+| S02 | [Tenderbot API](https://tenderbot.kz/pages/api) | Procurement feed and integration contract; vendor documentation, no API execution. |
+| S03 | [Tenderplan search](https://tenderplan.ru/search) | Regional scope, attachment search, filters and document viewing. |
+| S04 | [Tenderplan product](https://tenderplan.ru/) | Team workflow and history descriptions; landing-page examples are not account observations. |
+| S05 | [Tenderplan API documentation](https://tenderplan.ru/api/doc/) | JavaScript-rendered Swagger documentation checked in browser, T03. |
+| S06 | [Kontur.Zakupki AI announcement](https://zakupki.kontur.ru/site/new-features/ai) | Separates available search from announced advanced functions; [page capture](evidence/S06-kontur-announcement.png). |
+| S07 | [Kontur.Zakupki features](https://zakupki.kontur.ru/site/features) | Discovery, analytics, notifications and team workflow. |
+| S08 | [BiCoTender product description](https://www.bicotender.ru/about.html) | Coverage, analytics and preanalysis claims; a later automated refetch returned HTTP 403. |
+| S09 | [BiCoTender search plans](https://www.bicotender.ru/tariffs-search.html) | Plan-dependent preanalysis, TRM, collaboration and Excel export; advertised speed not independently timed. |
+| S10 | [BiCoTender integration announcement](https://www.bicotender.ru/news/novoye_resheniye.html) | Historical API/CRM announcement published 30 September 2020; current availability not verified; later refetch returned HTTP 403. |
+| S11 | [UZEX eTender portal](https://etender.uzex.uz/) and [guides](https://etender.uzex.uz/docs) | Public procurement interface and linked participation guidance; T02. |
+| S12 | [UZEX supplier instruction](https://etender.uzex.uz/assets/file/e-tender-instruction-for-provider.pdf) | Official participation instructions; does not establish SME document-analysis functions. |
 
 ## Predefence coverage and follow-up
 
