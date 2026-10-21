@@ -1,12 +1,12 @@
-# Agents and compliance literature review
+# TenderGuard literature review
 
 TenderGuard uses evidence from tender documents and company records to assess requirements and explain compliance risks for SMEs. This review supports a controlled, testable analysis workflow: retrieve evidence, extract requirements, compare them with company evidence, and report supported findings with explicit uncertainty. The value of separating these stages must be measured against a simpler RAG baseline.
 
-Task: [TG-R02 — Review four scientific papers on agents and compliance](https://app.notion.com/p/3fc6f6d6a08b8014b382f4a519612f28). Task owner: Rassul Akhmetov. Reviewer: Ramazan Talgatov. Prepared: 21 October 2026. Peer review: pending.
+Project team: Daniyar Kairatov, Rassul Akhmetov and Ramazan Talgatov. Prepared: 21 October 2026. Peer review: pending.
 
 ## Scope and source selection
 
-The four sources address tool-using agents, coordination failures, legal reasoning and evaluation of grounded answers. They complement the retrieval, embeddings and multilingual-data work assigned to Daniyar. Selection is thematic rather than a systematic search of all research. The published editions date from 2023–2025 and fall within the rubric's recent-source window.
+The four sources address tool-using agents, coordination failures, legal reasoning and evaluation of grounded answers. Selection is thematic rather than a systematic search of all research. The published editions date from 2023–2025 and fall within the rubric's recent-source window.
 
 Publication status is supported by the conference header in the ReAct paper and the publisher records for MAST, LegalBench and RAGAs. The source locations below identify the methods and results used in each discussion. The records retain the shared review's identifiers L07, L14, L08 and L04 so they can be integrated without counting the same publication twice.
 
@@ -17,7 +17,7 @@ Publication status is supported by the conference header in the ReAct paper and 
 | L08 | LegalBench, NeurIPS 2023 | Evaluation of legal reasoning | How should documentary fit and legal applicability be separated? |
 | L04 | RAGAs, EACL 2024 | Automated RAG evaluation | Which quality checks need human reference judgments? |
 
-These four publications are Rassul's contribution to Component 3. The team's combined review still needs at least 12 meaningfully used sources, including at least 8 scientific publications. Applicable legislation belongs in a separate regulatory review; a legal-reasoning benchmark is not a normative legal source.
+This review currently contains four scientific publications. Component 3 requires at least 12 meaningfully used sources, including at least 8 scientific publications; further literature can be integrated into this same document. Applicable legislation belongs in a separate regulatory review; a legal-reasoning benchmark is not a normative legal source.
 
 ## ReAct and controlled tool use
 
@@ -109,6 +109,6 @@ Split by document family and related company-profile variants before tuning, and
 
 ## Review and integration
 
-TG-R02 requires four literature records and a synthesis explaining method, evaluation, limitation and resulting design decision. Those records are provided above, with source editions and evidence locations. Rassul confirms the interpretations for presentation; Ramazan records the peer review and any requested corrections before accepting the task. Review approval and the Notion status remain with the team.
+The review connects each publication's method, evaluation and limitations to a TenderGuard design decision. Team members confirm the interpretations for presentation; Ramazan coordinates peer review and records any requested corrections. Review approval and task statuses remain with the team.
 
-Integrate these records with Daniyar's and Ramazan's contributions under Component 3, retaining unique publication identifiers. Transfer the proposed decisions into the requirements, architecture and evaluation documents after team review. The Word document is a presentation copy of this Markdown source; update both together when incorporating review comments.
+Maintain one literature review under Component 3, retaining unique publication identifiers when adding research. Transfer the proposed decisions into the requirements, architecture and evaluation documents after team review. The Word document is a presentation copy of this Markdown source; update both together when incorporating review comments.
