@@ -16,7 +16,7 @@ TenderGuard is a proposed web platform that helps an SME check a tender against 
 | Proposed pilot category | IT and office equipment; provisional until user discussions and document availability confirm a manageable category |
 | First predefence | 24 October 2026 |
 
-The proposal follows the supplied first-predefence requirements, the team assignment, the supervisor's architecture and the team's subsequent scope decisions. The task tracker assigns TG-R01 to Rassul and its review to Ramazan. The detailed specification is maintained in [Requirements and acceptance criteria](requirements.md).
+The proposal follows the supplied first-predefence requirements, the team assignment, the supervisor's architecture and the team's subsequent scope decisions. The task tracker assigns TG-R01 to Rassul and its review to Ramazan. The separate requirements and acceptance criteria specification is planned at `docs/requirements/requirements.md`.
 
 ## Problem statement
 
@@ -75,7 +75,7 @@ The profile is an evidence-backed record rather than an unrestricted text biogra
 
 ## Scope and priorities
 
-The core version must support one approved pilot category, text-based Russian and Kazakh PDF/DOCX documents, organization access, company evidence, cited question answering, atomic requirement extraction, documentary matching, a transparent report, human review, versioned runs, durable processing and controlled model calls. Detailed priorities and acceptance criteria are in [the requirements specification](requirements.md).
+The core version must support one approved pilot category, text-based Russian and Kazakh PDF/DOCX documents, organization access, company evidence, cited question answering, atomic requirement extraction, documentary matching, a transparent report, human review, versioned runs, durable processing and controlled model calls. Detailed priorities and acceptance criteria will be maintained in the planned requirements specification at `docs/requirements/requirements.md`.
 
 Legal analysis is bounded. A legal flag requires an identified source edition and a human-validated applicability rule within a limited corpus. If the corpus or applicability is unresolved, the platform reports `legal_unknown` and requests human review. It must not silently convert documentary fit into a legal conclusion.
 
@@ -100,7 +100,7 @@ The analysis pipeline has four stages: ingestion, requirement extraction, compli
 | Model access | Provider adapter and server-enforced Privacy Gateway | Initial hosted inference uses permitted data only; provider, model ID and limits remain to be selected |
 | Operations | Docker Compose, Caddy and GitHub Actions | Lock compatible versions during implementation; verify setup, migrations and deployment |
 
-This is an implementation baseline rather than a completed technology benchmark. TG-D04, TG-R04 and TG-T03 must refine model choice, architecture and privacy design respectively. The [literature review](research/literature-review.md) explains the current scientific rationale and its limitations.
+This is an implementation baseline rather than a completed technology benchmark. TG-D04, TG-R04 and TG-T03 must refine model choice, architecture and privacy design respectively. The [literature review](../literature-review/literature-review.md) explains the current scientific rationale and its limitations.
 
 ## Privacy and trust boundaries
 

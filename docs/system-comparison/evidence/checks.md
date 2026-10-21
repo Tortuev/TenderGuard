@@ -1,6 +1,6 @@
 # Existing-system observation log
 
-This log supports the [comparison matrix](../../comparisons/existing-systems.md).
+This log supports the [comparison matrix](../existing-systems.md).
 Checks used public pages without an authenticated account. The observation date
 for T01–T03 and the announcement capture is **2026-10-21**.
 
