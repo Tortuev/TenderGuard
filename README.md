@@ -125,7 +125,6 @@ before connecting any real company documents.
 
 - [Database foundation and ER diagram](docs/database/database.md)
 - [Project proposal](docs/project-proposal/proposal.md)
-- Requirements and acceptance criteria: `docs/requirements/requirements.md` (planned)
 - [Literature review](docs/literature-review/literature-review.md)
 - [Existing systems comparison: CIS platforms](docs/system-comparison/existing-systems.md)
 
