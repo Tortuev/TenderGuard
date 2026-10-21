@@ -53,10 +53,11 @@ Technology benchmarking remains a separate deliverable under component 5.
 ## Scope and consistency matrix
 
 The `AR-*` identifiers below are **working architecture references** derived from
-the proposal's core workflow and objectives. They provide traceability while the
-separate requirements specification is being prepared; they are not a claim of
-supervisor approval. Reconcile them with component 6 without losing the mapping.
-Core references must remain covered by both a use case and a component.
+the proposal's core workflow and objectives. The [requirements specification](../requirements/requirements.md#traceability-to-architecture-and-implementation-responsibility)
+maps the functional `FR-*` requirements to these references, use cases and components.
+Privacy and non-functional requirements remain pending under TG-T03; supervisor
+approval is not claimed. Core references must remain covered by both a use case
+and a component.
 
 | Reference and required behaviour | Use cases | Responsible components | Data / verification anchor |
 | --- | --- | --- | --- |

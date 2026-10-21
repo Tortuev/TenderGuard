@@ -16,7 +16,7 @@ TenderGuard is a proposed web platform that helps an SME check a tender against 
 | Proposed pilot category | IT and office equipment; provisional until user discussions and document availability confirm a manageable category |
 | First predefence | 24 October 2026 |
 
-The proposal follows the supplied first-predefence requirements, the team assignment, the supervisor's architecture and the team's subsequent scope decisions. The task tracker assigns TG-R01 to Rassul and its review to Ramazan. The separate requirements and acceptance criteria specification is planned at `docs/requirements/requirements.md`.
+The proposal follows the supplied first-predefence requirements, the team assignment, the supervisor's architecture and the team's subsequent scope decisions. The task tracker assigns TG-R01 to Rassul and its review to Ramazan. The separate [requirements specification](../requirements/requirements.md) contains functional requirements and acceptance criteria; the privacy and non-functional contribution remains pending under TG-T03.
 
 ## Problem statement
 
@@ -75,7 +75,7 @@ The profile is an evidence-backed record rather than an unrestricted text biogra
 
 ## Scope and priorities
 
-The core version must support one approved pilot category, text-based Russian and Kazakh PDF/DOCX documents, organization access, company evidence, cited question answering, atomic requirement extraction, documentary matching, a transparent report, human review, versioned runs, durable processing and controlled model calls. Detailed priorities and acceptance criteria will be maintained in the planned requirements specification at `docs/requirements/requirements.md`.
+The core version must support one approved pilot category, text-based Russian and Kazakh PDF/DOCX documents, organization access, company evidence, cited question answering, atomic requirement extraction, documentary matching, a transparent report, human review, versioned runs, durable processing and controlled model calls. Detailed functional priorities and acceptance criteria are maintained in the [requirements specification](../requirements/requirements.md), with privacy and non-functional requirements to be added under TG-T03.
 
 Legal analysis is bounded. A legal flag requires an identified source edition and a human-validated applicability rule within a limited corpus. If the corpus or applicability is unresolved, the platform reports `legal_unknown` and requests human review. It must not silently convert documentary fit into a legal conclusion.
 

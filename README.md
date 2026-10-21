@@ -106,6 +106,7 @@ docs/database/                  ER diagram, data contracts and limitations
 docs/project-proposal/          Project proposal and scope
 docs/literature-review/         Shared literature review
 docs/system-comparison/         Existing systems comparison and its evidence
+docs/requirements/              Functional requirements, acceptance checks and privacy handoff
 docs/architecture/              Architecture with Mermaid diagrams, contracts and SVG exports
 compose.yaml                   Local PostgreSQL 17 service
 ```
@@ -128,10 +129,12 @@ before connecting any real company documents.
 - [Project proposal](docs/project-proposal/proposal.md)
 - [Literature review](docs/literature-review/literature-review.md)
 - [Existing systems comparison: CIS platforms](docs/system-comparison/existing-systems.md)
+- [Requirements: functional scope and acceptance criteria](docs/requirements/requirements.md)
 - [Architecture, Mermaid diagrams and integration contracts](docs/architecture/architecture.md)
 
 The proposal defines the target scope for TG-R01 and its unresolved decisions.
-The separate requirements specification is planned. Team and supervisor approval are pending.
+The functional requirements specification is prepared for review; Ramazan's privacy
+and non-functional requirements remain pending. Team and supervisor approval are pending.
 The literature review contains four scientific source discussions, a synthesis and
 proposed design/evaluation decisions. It is ready for team review; approval remains pending.
 The other predefence materials will be added under `docs/` as their tasks are completed.
@@ -153,7 +156,7 @@ add working links as those materials become available.
 | 3 | Literature review and separate regulatory analysis | [Literature review](docs/literature-review/literature-review.md); `docs/regulatory-review/regulatory-review.md` planned |
 | 4 | Existing systems comparison | [Five CIS systems, ten criteria and observation evidence](docs/system-comparison/existing-systems.md) |
 | 5 | Technology comparisons and decisions | `docs/technology-comparison/technologies.md` |
-| 6 | Functional and non-functional requirements | `docs/requirements/requirements.md` |
+| 6 | Functional and non-functional requirements | [Functional specification and pending privacy/NFR contribution](docs/requirements/requirements.md) |
 | 7 | Architecture, editable diagrams and readable exports | [Architecture, Mermaid diagrams, data model and contracts](docs/architecture/architecture.md) |
 | 8 | UX prototype link, screens and scenarios | `docs/ux/` |
 | 9 | Verification and evaluation protocol | `docs/evaluation-plan/evaluation-plan.md` |
