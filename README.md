@@ -25,7 +25,7 @@ still requires peer review before merging into `main`.
 - Chunks with source locators, analysis runs, input manifests, requirements and findings.
 - Processing-job records with tenant-scoped idempotency and valid target constraints.
 - Ordered, checksummed SQL migrations with atomic rollback and concurrent-run protection.
-- Immutable version/result rows, an [ER diagram and database contract](docs/database.md),
+- Immutable version/result rows, an [ER diagram and database contract](docs/database/database.md),
   and integration tests against PostgreSQL 17.
 
 ## Local setup
@@ -102,8 +102,10 @@ backend/app/db/migrate.py       Migration command
 backend/tests/                 Migration and schema tests
 backend/uv.lock                Locked development/runtime dependencies
 db/migrations/                 Ordered PostgreSQL SQL files
-docs/database.md               ER diagram, data contracts and limitations
-docs/research/literature-review.md  Shared literature review
+docs/database/                  ER diagram, data contracts and limitations
+docs/project-proposal/          Project proposal and scope
+docs/literature-review/         Shared literature review
+docs/system-comparison/         Existing systems comparison and its evidence
 compose.yaml                   Local PostgreSQL 17 service
 ```
 
@@ -116,19 +118,19 @@ compose.yaml                   Local PostgreSQL 17 service
 - **TG-D08 / TG-D14:** embeddings and vector retrieval contracts.
 
 Database constraints alone do not enforce privacy. See the
-[security boundary and dependencies](docs/database.md#security-boundary-and-remaining-dependencies)
+[security boundary and dependencies](docs/database/database.md#security-boundary-and-remaining-dependencies)
 before connecting any real company documents.
 
 ## Documentation
 
-- [Database foundation and ER diagram](docs/database.md)
-- [Project proposal](docs/proposal.md)
-- [Requirements and acceptance criteria](docs/requirements.md)
-- [Literature review](docs/research/literature-review.md)
-- [Existing systems comparison: CIS platforms](docs/comparisons/existing-systems.md)
+- [Database foundation and ER diagram](docs/database/database.md)
+- [Project proposal](docs/project-proposal/proposal.md)
+- Requirements and acceptance criteria: `docs/requirements/requirements.md` (planned)
+- [Literature review](docs/literature-review/literature-review.md)
+- [Existing systems comparison: CIS platforms](docs/system-comparison/existing-systems.md)
 
-The proposal and requirements define the target scope for TG-R01, with priorities,
-acceptance criteria and unresolved decisions. Team and supervisor approval are pending.
+The proposal defines the target scope for TG-R01 and its unresolved decisions.
+The separate requirements specification is planned. Team and supervisor approval are pending.
 The literature review contains four scientific source discussions, a synthesis and
 proposed design/evaluation decisions. It is ready for team review; approval remains pending.
 The other predefence materials will be added under `docs/` as their tasks are completed.
@@ -145,17 +147,17 @@ add working links as those materials become available.
 
 | Criterion | Material | Document or planned path |
 | --- | --- | --- |
-| 1 | Project proposal and scope | [Proposal](docs/proposal.md) |
-| 2 | Relevance findings and permitted interview evidence | `docs/relevance.md` |
-| 3 | Literature review and separate regulatory analysis | [Literature review](docs/research/literature-review.md); `docs/research/regulatory-review.md` planned |
-| 4 | Existing systems comparison | [Five CIS systems, ten criteria and observation evidence](docs/comparisons/existing-systems.md) |
-| 5 | Technology comparisons and decisions | `docs/comparisons/technologies.md` |
-| 6 | Functional and non-functional requirements | [Requirements](docs/requirements.md) |
+| 1 | Project proposal and scope | [Proposal](docs/project-proposal/proposal.md) |
+| 2 | Relevance findings and permitted interview evidence | `docs/relevance/relevance.md` |
+| 3 | Literature review and separate regulatory analysis | [Literature review](docs/literature-review/literature-review.md); `docs/regulatory-review/regulatory-review.md` planned |
+| 4 | Existing systems comparison | [Five CIS systems, ten criteria and observation evidence](docs/system-comparison/existing-systems.md) |
+| 5 | Technology comparisons and decisions | `docs/technology-comparison/technologies.md` |
+| 6 | Functional and non-functional requirements | `docs/requirements/requirements.md` |
 | 7 | Architecture, editable diagrams and readable exports | `docs/architecture/` |
 | 8 | UX prototype link, screens and scenarios | `docs/ux/` |
-| 9 | Verification and evaluation protocol | `docs/evaluation-plan.md` |
-| 10 | Responsibilities, milestones, risks, dependencies and tracker | `docs/project-management.md` |
-| 11 | Actual supervisor comments and resulting changes | `docs/supervisor-feedback.md` |
+| 9 | Verification and evaluation protocol | `docs/evaluation-plan/evaluation-plan.md` |
+| 10 | Responsibilities, milestones, risks, dependencies and tracker | `docs/project-management/project-management.md` |
+| 11 | Actual supervisor comments and resulting changes | `docs/supervisor-feedback/supervisor-feedback.md` |
 
 Keep private interview recordings, contact details and confidential company files
 in restricted storage. Repository documentation should contain anonymized findings
