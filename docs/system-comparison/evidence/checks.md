@@ -99,6 +99,22 @@ illustrative product examples are not experimental outputs.
 
 ![Official Kontur AI announcement and rollout qualification](S06-kontur-announcement.png)
 
+## Submission-source recheck
+
+The official [Kontur AI page](https://zakupki.kontur.ru/site/new-features/ai)
+still describes cited document answers and risk/report functions, while its rollout
+paragraph announces advanced access from **23 October 2026**. Treat these advanced
+functions as announced rather than independently tested; recheck after the stated
+rollout before presenting them as available. The page's promotional access wording
+does not establish a completed paid-user test.
+
+The [Tenderbot homepage](https://tenderbot.kz/) still documents tender discovery,
+notifications and analytics, and [Tenderplan](https://tenderplan.ru/) still documents
+search, analytics and team management. These source reads do not repeat the earlier
+interactive searches or verify their current result counts. BiCo's public homepage
+returned an access restriction to the recheck; its earlier cited evidence remains
+qualified rather than being presented as a new successful observation.
+
 ## Evidence boundaries
 
 Only public product information and generic search text were used. No confidential

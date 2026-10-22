@@ -1,14 +1,16 @@
 # TenderGuard: Research Slides and Speaker Notes
 
-This contribution supports the shared first-predefence presentation. The six editable slides cover the research basis, four research questions, an annotated example, baseline comparison, evaluation measures and limitations. They follow the proposal and the prepared TG-D01 to TG-D04 documents.
+This contribution supports the shared first-predefence presentation. The six-slide PDF and editable text below cover the research basis, four research questions, an annotated example, baseline comparison, evaluation measures and limitations. They follow the proposal and the prepared TG-D01 to TG-D04 documents.
 
-[Open the editable research slides](TenderGuard_M0_Research.pptx)
+[Open the research slide PDF](research-slides.pdf)
+
+The previously referenced PowerPoint file is not present in the repository. The text and speaker notes below remain editable. The integrated [shared presentation](../presentation.md) includes this research contribution.
 
 ## Integration into the shared presentation
 
 Use these slides in the corresponding literature, research and evaluation sections of the team's presentation. Preserve the source paths and speaker notes when copying slides. If the shared deck already covers one topic, integrate the relevant material into that slide rather than repeating it. The complete team presentation still needs the other predefence components.
 
-The suggested speaking time is about four to five minutes for this contribution, subject to the team's confirmed presentation format. Each slide includes its evidence path. The PowerPoint contains the same speaker notes as the sections below.
+The suggested speaking time is about four to five minutes for this contribution, subject to the team's confirmed presentation format. Each slide includes its evidence path. The sections below retain the speaker notes for the PDF research module.
 
 ## Baseline terminology
 

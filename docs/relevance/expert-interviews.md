@@ -1,14 +1,15 @@
 # Expert Interviews — TenderGuard
 
 
+Public records use participant identifiers and omit contact details. These are team-supplied transcripts; collection context, interviewer, consent/use basis and supporting records still need confirmation by TG-T01's owner. The separate recommendations refer to interview scenarios, so their evidential status must be reconciled before claiming verified actual-user validation.
+
 **Research objective:** To identify challenges in tender preparation and organization and determine how TenderGuard could help users manage tender requirements and documentation.
 
 ---
 
 ## Interview 1 — Tender Specialist
 
-**Participant Name:** Murad
-**Phone Number:** +7 747 791-32-75
+**Participant ID:** P01
 
 **Q1. What are your main responsibilities when working with tenders?**
 
@@ -54,8 +55,7 @@
 
 ## Interview 2 — Tender Specialist
 
-**Participant Name:** Rashid
-**Phone Number:** +7 777 241 3057
+**Participant ID:** P02
 
 **Q1. What tasks do you perform when preparing tender applications?**
 
@@ -101,8 +101,7 @@
 
 ## Interview 3 — Tender Process Organizer
 
-**Participant Name:** Yergen
-**Phone Number:** +7 775 000 5319
+**Participant ID:** P03
 
 **Q1. What are your main responsibilities as an organizer?**
 
@@ -150,7 +149,7 @@
 
 The three participant profiles highlight complementary needs for TenderGuard.
 
-| Identified need | Murad | Rashid | Yergen |
+| Identified need | P01 | P02 | P03 |
 |---|---|---|---|
 | Automatic requirement extraction | Yes | Yes | Useful |
 | Matching requirements with company documents | Yes | Yes | Useful |

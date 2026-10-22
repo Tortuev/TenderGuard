@@ -288,7 +288,7 @@ The backend currently requires Python 3.13. Resolve and lock compatible parsing,
 
 ### Cost calculation and limits
 
-For standard text-token pricing, the hosted candidate's documentation checked on **22 October 2026** lists **USD 0.75 per million input tokens** and **USD 4.50 per million output tokens**. Recheck the actual endpoint/service tier and any applicable adjustments before running. The dated model identifier pins behavior, not a permanent price. [S5]
+For standard text-token pricing, the cited hosted candidate documentation lists **USD 0.75 per million input tokens** and **USD 4.50 per million output tokens**. Recheck the actual endpoint/service tier and any applicable adjustments before running. The dated model identifier pins behavior, not a permanent price. [S5]
 
 Use:
 
@@ -340,7 +340,7 @@ These are expected checks. Passing the small diagnostic set would not establish 
 
 ## 9. Sources and repository evidence
 
-Official model properties and documentation were checked on 22 October 2026. Published specifications support candidate selection; they do not establish TenderGuard benchmark results. Resource settings and selection rules in this record are engineering proposals that require development measurements.
+Published specifications support candidate selection; they do not establish TenderGuard benchmark results. Resource settings and selection rules in this record are engineering proposals that require development measurements.
 
 ### Repository evidence
 

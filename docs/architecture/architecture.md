@@ -234,6 +234,24 @@ The gateway can reuse the backend package in a separate process. Avoid introduci
 an agent framework, message broker or additional datastore without a demonstrated
 requirement and a component-5 decision.
 
+## Dependency direction and clean architecture
+
+The target backend separates domain rules, application use cases and external
+adapters. This is a dependency rule for the future implementation, not a claim that
+these packages already exist in the database-only codebase.
+
+| Boundary | Responsibility | Dependency rule |
+| --- | --- | --- |
+| Domain | Requirement conditions, documentary status rules and evidence/reference invariants | No HTTP, database-driver, model-SDK or UI imports; identifiers and source text remain explicit inputs. |
+| Application | Upload/run/review/QA use cases, lifecycle coordination and validated handoffs | Depends on domain rules and narrow storage, job, retrieval, authorization and inference ports. |
+| Adapters | FastAPI handlers, PostgreSQL/FileStore repositories, parser/model adapters and worker entry points | Implement ports and translate external formats; do not make provider responses or browser fields trusted domain decisions. |
+| Composition and operations | Process startup, credentials, policy configuration and deployment wiring | Select implementations without making domain/application rules depend on a particular provider or transport. |
+
+The source resolver, durable worker and Inference Gateway keep their existing trust
+boundaries. Clean dependency direction does not replace tenant authorization,
+database constraints or egress controls. Introduce modules as features are implemented;
+do not create empty services or duplicate domain models merely to match a diagram.
+
 ## Data model and required evolution
 
 <!-- diagram:data-model -->
