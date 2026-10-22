@@ -6,6 +6,8 @@ TenderGuard is a diploma project for helping an SME compare a tender package wit
 
 **Current stage:** first-predefence analysis and design, a clickable synthetic UX prototype, and an implemented PostgreSQL database foundation. The repository does not yet contain an application API, working RAG/agent pipeline or enforced privacy gateway. Prepared documents describe the target platform and planned experiments.
 
+**Project tracking:** [TenderGuard in Notion](https://app.notion.com/p/3fc6f6d6a08b8017a7cfc44ac2f981d4?v=3fc6f6d6a08b8069a70b000c2915ece9&source=copy_link).
+
 ## Problem and target users
 
 Tender conditions can be distributed across specifications, attachments and amendments. A supplier must identify each obligation, locate the appropriate company document, check its applicability and determine what remains unresolved. Summarizing the tender alone leaves this company-specific verification to the specialist.
@@ -109,7 +111,7 @@ The [architecture package](docs/architecture/architecture.md) includes context, 
 
 **Supervisor:** Almas Ospanov, as recorded in the proposal. Formal spelling, affiliation and scope approval remain to be confirmed with the supervisor.
 
-The [Notion task tracker](https://app.notion.com/p/3fc6f6d6a08b8017a7cfc44ac2f981d4?v=3fc6f6d6a08b8069a70b000c2915ece9) holds assignments, priorities, dependencies and acceptance criteria. GitHub retains deliverables and contribution history. The [project-management plan](docs/project-management/project-management.md) records responsibilities, milestones, risks and dependencies. The team confirms that all three members have completed their contributions and agreed on the project summary. Repository coverage below refers to the artifacts available in the merged baseline. Task status updates remain with project manager Ramazan.
+The Notion task tracker holds assignments, priorities, dependencies and acceptance criteria. GitHub retains deliverables and contribution history. The [project-management plan](docs/project-management/project-management.md) records responsibilities, milestones, risks and dependencies. The team confirms that all three members have completed their contributions and agreed on the project summary. Repository coverage below refers to the artifacts available in the merged baseline. Task status updates remain with project manager Ramazan.
 
 ## First-predefence materials and current coverage
 

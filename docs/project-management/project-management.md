@@ -1,7 +1,7 @@
 # Project management, responsibilities and risks
 
 [GitHub](https://github.com/Tortuev/TenderGuard) holds deliverables and implementation
-history. The [Notion tracker](https://app.notion.com/p/3fc6f6d6a08b8017a7cfc44ac2f981d4?v=3fc6f6d6a08b8069a70b000c2915ece9)
+history. The [Notion tracker](https://app.notion.com/p/3fc6f6d6a08b8017a7cfc44ac2f981d4?v=3fc6f6d6a08b8069a70b000c2915ece9&source=copy_link)
 holds assignments, priorities, deadlines and live statuses. The supervisor allows
 a convenient tracker; YouTrack is not mandatory. Ramazan manages statuses. This
 document is the committee-facing plan, not a second live tracker.
