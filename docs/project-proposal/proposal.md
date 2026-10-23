@@ -9,7 +9,7 @@ TenderGuard is a proposed web platform that helps an SME check a tender against 
 | Product and repository | [TenderGuard](https://github.com/Tortuev/TenderGuard) |
 | English diploma title | Design and Implementation of a Privacy-Preserving Multi-Agent RAG Platform for Automated Tender and Compliance Analysis for SMEs |
 | Russian diploma title | Проектирование и разработка мультиагентной RAG-платформы с сохранением конфиденциальности для автоматизированного анализа тендерной документации и комплаенс-рисков для МСБ |
-| Kazakh diploma title | МСБ үшін тендерлік құжаттаманы автоматты талдауға және комплаенс-тәуекелдерді бағалауға арналған, құпиялылықты сақтайтын көп агентті RAG платформасын жобалау және әзірлеу |
+| Kazakh diploma title | ШОБ үшін тендерлік құжаттаманы автоматты талдауға және комплаенс-тәуекелдерді бағалауға арналған, құпиялылықты сақтайтын көп агентті RAG платформасын жобалау және әзірлеу |
 | Team | Daniyar Kairatov, Rassul Akhmetov, Ramazan Talgatov |
 | Supervisor field | Almas Ospanov, as named in the existing planning material; official spelling, position and affiliation require team confirmation before formal submission |
 | Initial market context | SMEs preparing tender applications in Kazakhstan; Russian and Kazakh documents |
