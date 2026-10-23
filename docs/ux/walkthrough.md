@@ -1,6 +1,6 @@
 # UX prototype walkthrough
 
-The [standalone prototype](prototype/index.html) uses synthetic records and local
+The [standalone prototype](file:///Users/ramazantalgatov/Downloads/TenderGuard.html) uses synthetic records and local
 HTML/CSS/JavaScript interactions. Open the downloaded HTML in a browser; GitHub's
 source view is not the running prototype. It has no API, storage, authentication,
 model calls or real compliance analysis. Refresh resets temporary interactions.
